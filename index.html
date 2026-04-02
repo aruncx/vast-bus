@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAST Bus Transport — Vidya Academy of Science and Technology</title>
+    <meta name="description"
+        content="Find your college bus route, schedule, boarding times and directions — Vidya Academy of Science and Technology, Thrissur.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <link rel="stylesheet" href="styles.css">
+    <!-- Leaflet CSS for OpenStreetMap -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+
+<body>
+
+    <!-- ══════════════════ NAVBAR ══════════════════ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <img src="vast.png" alt="VAST Logo" class="nav-logo">
+                <div class="nav-brand-text">
+                    <span class="nav-title">Vidya Academy of Science and Technology</span>
+                    <span class="nav-sub">College Bus Transport Information System</span>
+                </div>
+            </div>
+            <div class="nav-pills">
+                <a href="#search-section" class="nav-pill active"><i class="fa-solid fa-magnifying-glass"></i> Find
+                    Bus</a>
+                <a href="#features-section" class="nav-pill"><i class="fa-solid fa-circle-info"></i> Info</a>
+            </div>
+
+            <!-- Social Media Icons -->
+            <div class="nav-socials">
+                <a href="https://www.vidyaacademy.ac.in/" target="_blank" class="nav-social-link"
+                    aria-label="College Website" title="College Website">
+                    <i class="fa-solid fa-globe"></i>
+                </a>
+                <a href="https://www.facebook.com/vidyatcr/" target="_blank" class="nav-social-link"
+                    aria-label="Facebook" title="Facebook">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+                <a href="https://www.youtube.com/channel/UCFlEyRo7TTzK826USi_98eg" target="_blank"
+                    class="nav-social-link" aria-label="YouTube" title="YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://www.instagram.com/vidmediavast/" target="_blank" class="nav-social-link"
+                    aria-label="Instagram" title="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.linkedin.com/school/vidyatcr/" target="_blank" class="nav-social-link"
+                    aria-label="LinkedIn" title="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+            </div>
+
+        </div>
+        <!-- ══════════════════ ALERT BANNER ══════════════════ -->
+        <div id="alert-banner-container" class="alert-banner-container" style="display: none;"></div>
+    </nav>
+
+    <!-- ══════════════════ HERO ══════════════════ -->
+    <section class="hero">
+        <!-- Animated mesh background -->
+        <div class="hero-mesh"></div>
+        <div class="hero-glow hero-glow-1"></div>
+        <div class="hero-glow hero-glow-2"></div>
+
+        <div class="hero-content">
+            <div class="hero-badge animate-fade-up">
+                <span class="badge-dot"></span>
+                Vidya Academy of Science &amp; Technology
+            </div>
+
+            <h1 class="hero-title animate-fade-up delay-1">
+                Your College<br>
+                <span class="hero-gradient-text">Bus Guide</span>
+            </h1>
+
+            <p class="hero-subtitle animate-fade-up delay-2">
+                Find routes, schedules &amp; get directions to VAST — all in one place.
+            </p>
+
+            <div class="hero-stats animate-fade-up delay-3">
+                <div class="stat-pill">
+                    <i class="fa-solid fa-route"></i>
+                    <span id="stat-routes">–</span> Routes
+                </div>
+                <div class="stat-pill">
+                    <i class="fa-solid fa-map-pin"></i>
+                    <span id="stat-stops">–</span> Stops
+                </div>
+                <div class="stat-pill">
+                    <i class="fa-solid fa-clock"></i>Daily Service
+                </div>
+            </div>
+
+            <div class="hero-buttons animate-fade-up delay-4" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="#search-section" class="hero-cta" style="animation: none; opacity: 1; transform: none;">
+                    <i class="fa-solid fa-search"></i> Find My Bus
+                </a>
+
+                <a href="https://drive.google.com/drive/folders/1Li0ltfSc1ms6F0dTwZXF6cScRXD0nrXM?usp=sharing"
+                    target="_blank" class="hero-cta"
+                    style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(12px); box-shadow: none; animation: none; opacity: 1; transform: none;">
+                    <i class="fa-solid fa-file-pdf" style="color: #f59e0b;"></i> Bus Circulars
+                </a>
+            </div>
+        </div>
+
+        <!-- Floating bus illustration -->
+        <div class="hero-illustration animate-float">
+            <div class="hero-bus">🚌</div>
+            <div class="hero-road">
+                <div class="road-line"></div>
+                <div class="road-line"></div>
+                <div class="road-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════ FEATURES STRIP ══════════════════ -->
+    <section class="features-section" id="features-section">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card animate-fade-up">
+                    <div class="feature-icon" style="--icon-color: #f59e0b;">
+                        <i class="fa-solid fa-bus"></i>
+                    </div>
+                    <h3>Find Your Stop</h3>
+                    <p>Search any boarding point to instantly find matching bus routes.</p>
+                </div>
+                <div class="feature-card animate-fade-up delay-1">
+                    <div class="feature-icon" style="--icon-color: #10b981;">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <h3>View Schedule & Fees</h3>
+                    <p>Check the arrival times of all buses and the transport fees for each stop for a six-month period.
+                    </p>
+                </div>
+                <div class="feature-card animate-fade-up delay-2">
+                    <div class="feature-icon" style="--icon-color: #6366f1;">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                    <h3>Get Directions</h3>
+                    <p>Click any stop row to open Google Maps directions to campus.</p>
+                </div>
+                <!-- 🆕 LIVE TRACKING FEATURE ADDED HERE -->
+                <div class="feature-card animate-fade-up delay-3" id="live-tracking-btn"
+                    style="cursor: pointer; border: 1px solid #ef4444; background: rgba(239, 68, 68, 0.05);">
+                    <div class="feature-icon" style="--icon-color: #ef4444;">
+                        <i class="fa-solid fa-satellite-dish fa-beat-fade"></i>
+                    </div>
+                    <h3>Live Tracking <span
+                            style="font-size:0.6rem; background:#ef4444; color:#fff; padding:2px 6px; border-radius:4px; vertical-align:middle; margin-left:5px;">Beta</span>
+                    </h3>
+                    <p>Track buses in real-time or share your live location if you are inside the bus.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════ LIVE TRACKING MODAL & UI ══════════════════ -->
+    <div id="tracking-modal" class="modal hidden">
+        <div class="modal-content glass">
+            <span class="close-modal" id="close-tracking-modal">&times;</span>
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-satellite-dish"></i> Live Bus Tracking</h3>
+            </div>
+            <div class="modal-body" id="tracking-modal-body">
+                <p style="margin-bottom: 1.5rem; text-align: center;">Are you inside the college bus?</p>
+                <div class="modal-actions" style="display: flex; gap: 1rem; justify-content: center;">
+                    <button id="btn-inside-bus" class="btn btn-primary"
+                        style="background:#10b981; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:600;"><i
+                            class="fa-solid fa-check"></i> YES</button>
+                    <button id="btn-tracking-bus" class="btn btn-secondary"
+                        style="background:#6366f1; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:600;"><i
+                            class="fa-solid fa-xmark"></i> NO (Just Tracking)</button>
+                </div>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <a href="live-dashboard.html"
+                        style="color: var(--brand-600); font-weight: 600; text-decoration: underline; font-size: 0.9rem;">View
+                        All Live Buses Dashboard</a>
+                </div>
+            </div>
+
+            <!-- YES FLOW: Inside Bus -->
+            <div class="modal-body hidden" id="inside-bus-flow">
+                <p>Select the bus you are currently in:</p>
+                <select id="inside-bus-select"
+                    style="margin-bottom: 1rem; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--neutral-300);"></select>
+                <button id="start-sharing-btn"
+                    style="width: 100%; background:#ef4444; color:#fff; border:none; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold;">Start
+                    Sharing GPS</button>
+                <p id="sharing-status"
+                    style="margin-top: 1rem; font-size: 0.85rem; color: var(--neutral-400); text-align: center;"></p>
+            </div>
+
+            <!-- NO FLOW: Tracking Bus -->
+            <div class="modal-body hidden" id="tracking-bus-flow">
+                <p>Select the bus you want to track:</p>
+                <select id="tracking-bus-select"
+                    style="margin-bottom: 1rem; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--neutral-300);"></select>
+                <button id="start-tracking-btn"
+                    style="width: 100%; background:#6366f1; color:#fff; border:none; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold;">Track
+                    Bus Location</button>
+                <p id="tracking-status"
+                    style="margin-top: 1rem; font-size: 0.85rem; color: var(--neutral-400); text-align: center;"></p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 2rem;
+            border-radius: var(--r-lg);
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--neutral-400);
+        }
+    </style>
+
+
+
+    <!-- ══════════════════ SEARCH ══════════════════ -->
+    <section class="search-outer" id="search-section">
+        <div class="container">
+
+            <div class="section-label animate-fade-up">
+                <span class="section-pill"><i class="fa-solid fa-magnifying-glass"></i> Search</span>
+            </div>
+            <h2 class="section-heading animate-fade-up delay-1">Find Your Bus Route</h2>
+            <p class="section-sub animate-fade-up delay-2">Search by your boarding stop or select a route directly from
+                the list below.</p>
+
+            <div class="search-card glass animate-fade-up delay-2">
+                <div class="search-controls">
+
+                    <!-- Stop search -->
+                    <div class="control-group">
+                        <label for="stop-search">
+                            <i class="fa-solid fa-location-dot"></i> Search by Boarding Point
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" id="stop-search" placeholder="E.g., THALORE, PUNKUNNAM…"
+                                autocomplete="off">
+                            <span class="input-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <ul id="search-results" class="autocomplete-results hidden"></ul>
+                        </div>
+                    </div>
+
+                    <div class="divider"><span>OR</span></div>
+
+                    <!-- Route select -->
+                    <div class="control-group">
+                        <label for="bus-select">
+                            <i class="fa-solid fa-bus"></i> Select Bus Route Directly
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="bus-select">
+                                <option value="" disabled selected>Select a route from the list</option>
+                            </select>
+                            <span class="select-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════ RESULTS ══════════════════ -->
+    <section id="results-section" class="results-outer hidden">
+        <div class="container">
+
+            <!-- Route banner -->
+            <div class="route-banner glass animate-fade-up" id="route-info">
+                <div class="route-banner-left">
+                    <span class="route-icon"><i class="fa-solid fa-route"></i></span>
+                    <div>
+                        <p class="route-label">Active Route</p>
+                        <h3 id="route-title">Bus Route</h3>
+                    </div>
+                </div>
+                <div class="route-banner-right">
+                    <span id="route-badge" class="route-badge">Bus No</span>
+                </div>
+            </div>
+
+            <!-- Grid: schedule + map -->
+            <div class="content-grid">
+
+                <!-- Schedule -->
+                <div class="schedule-card glass animate-fade-up">
+                    <div class="card-header">
+                        <span class="card-header-icon"><i class="fa-solid fa-clock"></i></span>
+                        <h4>Route Schedule</h4>
+                    </div>
+                    <div class="table-container">
+                        <table id="schedule-table">
+                            <thead>
+                                <tr>
+                                    <th><i class="fa-solid fa-map-pin"></i> Boarding Point</th>
+                                    <th><i class="fa-regular fa-clock"></i> Time</th>
+                                    <th><i class="fa-solid fa-indian-rupee-sign"></i>Fees per<br>Semester</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedule-body"></tbody>
+                        </table>
+                    </div>
+                    <p class="table-hint"><i class="fa-solid fa-hand-pointer"></i> Tap a row to see directions on the
+                        map | Last updated: 1 March 2026.</p>
+                </div>
+
+                <div class="map-card glass animate-fade-up delay-1" id="live-map-card">
+                    <div class="card-header">
+                        <span class="card-header-icon"><i class="fa-solid fa-map-location-dot"></i></span>
+                        <h4>Directions & Live Tracking</h4>
+                    </div>
+                    <p class="map-hint" id="map-hint">
+                        <i class="fa-regular fa-compass"></i> Select a boarding point or track a bus to view the map.
+                    </p>
+
+                    <!-- ETA Banner (Hidden by default) -->
+                    <div id="eta-banner" class="hidden"
+                        style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 10px; border-radius: 8px; margin-bottom: 15px; color: #10b981; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-clock fa-spin-pulse"></i>
+                        <span id="eta-text">Calculating ETA...</span>
+                    </div>
+
+                    <div class="map-container" id="map-container">
+                        <div class="map-placeholder" id="map-placeholder">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <p>Select a stop or bus to load the map</p>
+                        </div>
+                        <!-- Static Iframe for stops -->
+                        <iframe id="gmap" width="100%" height="100%" style="border:0;display:none; border-radius:12px;"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <!-- Real Dynamic Map for Live Tracking (Leaflet) -->
+                        <div id="dynamic-map"
+                            style="width: 100%; height: 100%; display:none; border-radius: 12px; overflow: hidden; z-index: 1;">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════ FOOTER ══════════════════ -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img src="vast.png" alt="VAST Logo" class="footer-logo">
+                <div>
+                    <p class="footer-name">Vidya Academy of Science &amp; Technology</p>
+                    <p class="footer-addr">Thalakottukara P.O., Kaipparambu, Thrissur, Kerala – 680501</p>
+                </div>
+            </div>
+            <p class="footer-copy">Built with <span class="heart">❤️</span> for <span>VAST |</span> &copy; 2026, All
+                rights
+                reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ══════════════════ TOAST NOTIFICATIONS ══════════════════ -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Scripts (order matters) -->
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <script src="alerts.js"></script>
+    <script src="bus-cursor.js"></script>
+    <script src="tracking.js"></script>
+
+    <!-- Navbar scroll & stats population -->
+    <script>
+        // Sticky navbar shadow on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // Populate hero stat counts after data.js loads
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof busData !== 'undefined') {
+                document.getElementById('stat-routes').textContent = busData.length;
+                const stops = new Set();
+                busData.forEach(r => r.stops.forEach(s => stops.add(s.name)));
+                document.getElementById('stat-stops').textContent = 380;
+            }
+        });
+
+        // Scroll-reveal using IntersectionObserver
+        const revealEls = document.querySelectorAll('.animate-fade-up');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('revealed');
+                    io.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        revealEls.forEach(el => io.observe(el));
+
+        // Map iframe show/hide
+        const origSelect = window.selectStop;
+        // patch: show iframe and hide placeholder when map is loaded
+        const gmap = document.getElementById('gmap');
+        const placeholder = document.getElementById('map-placeholder');
+        if (gmap) {
+            gmap.addEventListener('load', () => {
+                if (gmap.src && gmap.src !== 'about:blank' && gmap.src !== '') {
+                    gmap.style.display = 'block';
+                    if (placeholder) placeholder.style.display = 'none';
+                }
+            });
+        }
+
+        // Scroll feature cards to search section
+        document.querySelectorAll('.features-section .feature-card:not(#live-tracking-btn)').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => {
+                const searchSection = document.getElementById('search-section');
+                if (searchSection) {
+                    searchSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
