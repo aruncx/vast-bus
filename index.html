@@ -34,37 +34,39 @@
                 <img src="vast.png" alt="VAST Logo" class="nav-logo">
                 <div class="nav-brand-text">
                     <span class="nav-title">Vidya Academy of Science and Technology</span>
-                    <span class="nav-sub">College Bus Transport Information System</span>
+                    <span class="nav-sub">Kechery, Thrissur - College Bus Information System</span>
                 </div>
             </div>
-            <div class="nav-pills">
-                <a href="#search-section" class="nav-pill active"><i class="fa-solid fa-magnifying-glass"></i> Find
-                    Bus</a>
-                <a href="#features-section" class="nav-pill"><i class="fa-solid fa-circle-info"></i> Info</a>
-            </div>
+            <div class="nav-right">
+                <div class="nav-pills">
+                    <a href="#search-section" class="nav-pill active"><i class="fa-solid fa-magnifying-glass"></i> Find
+                        Bus</a>
+                    <a href="#features-section" class="nav-pill"><i class="fa-solid fa-circle-info"></i> Info</a>
+                </div>
 
-            <!-- Social Media Icons -->
-            <div class="nav-socials">
-                <a href="https://www.vidyaacademy.ac.in/" target="_blank" class="nav-social-link"
-                    aria-label="College Website" title="College Website">
-                    <i class="fa-solid fa-globe"></i>
-                </a>
-                <a href="https://www.facebook.com/vidyatcr/" target="_blank" class="nav-social-link"
-                    aria-label="Facebook" title="Facebook">
-                    <i class="fa-brands fa-facebook-f"></i>
-                </a>
-                <a href="https://www.youtube.com/channel/UCFlEyRo7TTzK826USi_98eg" target="_blank"
-                    class="nav-social-link" aria-label="YouTube" title="YouTube">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
-                <a href="https://www.instagram.com/vidmediavast/" target="_blank" class="nav-social-link"
-                    aria-label="Instagram" title="Instagram">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="https://www.linkedin.com/school/vidyatcr/" target="_blank" class="nav-social-link"
-                    aria-label="LinkedIn" title="LinkedIn">
-                    <i class="fa-brands fa-linkedin-in"></i>
-                </a>
+                <!-- Social Media Icons -->
+                <div class="nav-socials">
+                    <a href="https://www.vidyaacademy.ac.in/" target="_blank" class="nav-social-link"
+                        aria-label="College Website" title="College Website">
+                        <i class="fa-solid fa-globe"></i>
+                    </a>
+                    <a href="https://www.facebook.com/vidyatcr/" target="_blank" class="nav-social-link"
+                        aria-label="Facebook" title="Facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.youtube.com/channel/UCFlEyRo7TTzK826USi_98eg" target="_blank"
+                        class="nav-social-link" aria-label="YouTube" title="YouTube">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                    <a href="https://www.instagram.com/vidmediavast/" target="_blank" class="nav-social-link"
+                        aria-label="Instagram" title="Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/school/vidyatcr/" target="_blank" class="nav-social-link"
+                        aria-label="LinkedIn" title="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                </div>
             </div>
 
         </div>
@@ -82,16 +84,16 @@
         <div class="hero-content">
             <div class="hero-badge animate-fade-up">
                 <span class="badge-dot"></span>
-                Vidya Academy of Science &amp; Technology
+                Vidya Academy of Science &amp; Technology, Thrissur
             </div>
 
             <h1 class="hero-title animate-fade-up delay-1">
-                Your College<br>
+                VAST College<br>
                 <span class="hero-gradient-text">Bus Guide</span>
             </h1>
 
             <p class="hero-subtitle animate-fade-up delay-2">
-                Find routes, schedules &amp; get directions to VAST — all in one place.
+                Find Bus routes, fees, schedules, Circulars &amp; get directions to VAST — all in one place.
             </p>
 
             <div class="hero-stats animate-fade-up delay-3">
@@ -143,21 +145,21 @@
                     <h3>Find Your Stop</h3>
                     <p>Search any boarding point to instantly find matching bus routes.</p>
                 </div>
-                <div class="feature-card animate-fade-up delay-1">
+                <div class="feature-card animate-fade-up delay-1" id="bus-fee-btn">
+                    <div class="feature-icon" style="--icon-color: #8b5cf6;">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                    </div>
+                    <h3>Check Bus Fee</h3>
+                    <p>Instantly find the semester bus fee for your boarding point.</p>
+                </div>
+                <div class="feature-card animate-fade-up delay-2">
                     <div class="feature-icon" style="--icon-color: #10b981;">
                         <i class="fa-solid fa-calendar-check"></i>
                     </div>
-                    <h3>View Schedule & Fees</h3>
-                    <p>Check the arrival times of all buses and the transport fees for each stop for a six-month period.
-                    </p>
+                    <h3>View Schedule</h3>
+                    <p>Check the arrival times of all buses for your chosen route.</p>
                 </div>
-                <div class="feature-card animate-fade-up delay-2">
-                    <div class="feature-icon" style="--icon-color: #6366f1;">
-                        <i class="fa-solid fa-map-location-dot"></i>
-                    </div>
-                    <h3>Get Directions</h3>
-                    <p>Click any stop row to open Google Maps directions to campus.</p>
-                </div>
+
                 <!-- 🆕 LIVE TRACKING FEATURE ADDED HERE -->
                 <div class="feature-card animate-fade-up delay-3" id="live-tracking-btn"
                     style="cursor: pointer; border: 1px solid #ef4444; background: rgba(239, 68, 68, 0.05);">
@@ -260,12 +262,55 @@
 
 
 
-    <!-- ══════════════════ SEARCH ══════════════════ -->
-    <section class="search-outer" id="search-section">
+    <!-- ══════════════════ FEE SEARCH ══════════════════ -->
+    <section class="fee-search-outer" id="fee-search-section" style="padding: 5rem 0 3rem;">
         <div class="container">
 
             <div class="section-label animate-fade-up">
-                <span class="section-pill"><i class="fa-solid fa-magnifying-glass"></i> Search</span>
+                <span class="section-pill"><i class="fa-solid fa-indian-rupee-sign"></i>Search Bus Fee</span>
+            </div>
+
+            <h2 class="section-heading animate-fade-up delay-1">Find Your Bus Fee</h2>
+            <p class="section-sub animate-fade-up delay-2">Search by your boarding stop to see the semester bus fee.</p>
+
+            <div class="search-card glass animate-fade-up delay-2">
+                <div class="search-controls" style="display: flex; gap: 2rem; align-items: flex-start;">
+
+                    <!-- Stop search -->
+                    <div class="control-group" style="flex: 1;">
+                        <label for="fee-stop-search">
+                            <i class="fa-solid fa-location-dot"></i> Search by Boarding Point
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" id="fee-stop-search" placeholder="E.g., THALORE, PUNKUNNAM…"
+                                autocomplete="off">
+                            <span class="input-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <ul id="fee-search-results" class="autocomplete-results hidden"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Fee Display -->
+                    <div class="control-group" style="flex: 1;">
+                        <label for="fee-display">
+                            BUS FEE
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" id="fee-display" placeholder="Amount will appear here" readonly
+                                style="background: var(--neutral-50); color: var(--neutral-900); font-weight: bold; border-color: var(--neutral-200);">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════ SEARCH ══════════════════ -->
+    <section class="search-outer" id="search-section" style="padding-top: 2rem;">
+        <div class="container">
+
+            <div class="section-label animate-fade-up">
+                <span class="section-pill"><i class="fa-solid fa-magnifying-glass"></i> Search Bus Route</span>
             </div>
             <h2 class="section-heading animate-fade-up delay-1">Find Your Bus Route</h2>
             <p class="section-sub animate-fade-up delay-2">Search by your boarding stop or select a route directly from
@@ -340,7 +385,6 @@
                                 <tr>
                                     <th><i class="fa-solid fa-map-pin"></i> Boarding Point</th>
                                     <th><i class="fa-regular fa-clock"></i> Time</th>
-                                    <th><i class="fa-solid fa-indian-rupee-sign"></i>Fees per<br>Semester</th>
                                 </tr>
                             </thead>
                             <tbody id="schedule-body"></tbody>
@@ -466,7 +510,7 @@
         }
 
         // Scroll feature cards to search section
-        document.querySelectorAll('.features-section .feature-card:not(#live-tracking-btn)').forEach(card => {
+        document.querySelectorAll('.features-section .feature-card:not(#live-tracking-btn):not(#bus-fee-btn)').forEach(card => {
             card.style.cursor = 'pointer';
             card.addEventListener('click', () => {
                 const searchSection = document.getElementById('search-section');
@@ -475,6 +519,18 @@
                 }
             });
         });
+
+        // Scroll to Fee Search section
+        const feeFeatureBtn = document.getElementById('bus-fee-btn');
+        if (feeFeatureBtn) {
+            feeFeatureBtn.style.cursor = 'pointer';
+            feeFeatureBtn.addEventListener('click', () => {
+                const feeSearchSection = document.getElementById('fee-search-section');
+                if (feeSearchSection) {
+                    feeSearchSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
     </script>
 
 </body>

@@ -10,6 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const gmap = document.getElementById('gmap');
     const mapHint = document.getElementById('map-hint');
     const mapPlaceholder = document.getElementById('map-placeholder');
+    
+    // Fee Search Elements
+    const feeStopSearch = document.getElementById('fee-stop-search');
+    const feeSearchResults = document.getElementById('fee-search-results');
+    const feeDisplay = document.getElementById('fee-display');
 
 
     // College Location
@@ -55,12 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             tdTime.textContent = formattedTime;
 
-            const tdFees = document.createElement('td');
-            tdFees.textContent = (stop.fees && stop.fees !== '-') ? `${stop.fees} \u20B9` : stop.fees;
-
             tr.appendChild(tdName);
             tr.appendChild(tdTime);
-            tr.appendChild(tdFees);
 
             // Add click listener for map directions
             tr.addEventListener('click', () => {
@@ -192,10 +193,71 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Handle Fee Stop Search Autocomplete
+    feeStopSearch.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        feeSearchResults.innerHTML = '';
+        feeDisplay.value = '';
+
+        if (query.length < 2) {
+            feeSearchResults.classList.add('hidden');
+            return;
+        }
+
+        let matches = [];
+
+        // Search through all routes and stops
+        busData.forEach((route) => {
+            route.stops.forEach((stop) => {
+                if (stop.stop_name.toLowerCase().includes(query) && stop.stop_name !== "VAST") {
+                    // Prevent duplicate boarding points
+                    if (!matches.some(m => m.stopName === stop.stop_name)) {
+                        matches.push({
+                            stopName: stop.stop_name,
+                            fees: stop.fees
+                        });
+                    }
+                }
+            });
+        });
+
+        // Render matches
+        if (matches.length > 0) {
+            matches.forEach(match => {
+                const li = document.createElement('li');
+                li.className = 'autocomplete-item';
+
+                // Highlight matching text
+                const regex = new RegExp(`(${query})`, 'gi');
+                const highlightedName = match.stopName.replace(regex, "<strong>$1</strong>");
+
+                li.innerHTML = `<div>${highlightedName}</div>`;
+
+                li.addEventListener('click', () => {
+                    feeStopSearch.value = match.stopName;
+                    feeDisplay.value = (match.fees && match.fees !== '-') ? `${match.fees} \u20B9` : 'Fee Data Unavailable';
+                    feeSearchResults.classList.add('hidden');
+                });
+
+                feeSearchResults.appendChild(li);
+            });
+            feeSearchResults.classList.remove('hidden');
+        } else {
+            const li = document.createElement('li');
+            li.className = 'autocomplete-item';
+            li.textContent = 'No matching stops found';
+            feeSearchResults.appendChild(li);
+            feeSearchResults.classList.remove('hidden');
+        }
+    });
+
     // Hide autocomplete when clicking outside
     document.addEventListener('click', (e) => {
         if (!stopSearch.contains(e.target) && !searchResults.contains(e.target)) {
             searchResults.classList.add('hidden');
+        }
+        if (!feeStopSearch.contains(e.target) && !feeSearchResults.contains(e.target)) {
+            feeSearchResults.classList.add('hidden');
         }
     });
 
