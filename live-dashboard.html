@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Bus Dashboard — VAST Transport</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Leaflet.js for custom Map (Google Maps alternative for multiple dynamic markers if no API key is set) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    
+    <style>
+        body { margin: 0; padding: 0; background: var(--neutral-900); color: #fff; display: flex; flex-direction: column; height: 100vh; }
+        .dashboard-header { background: rgba(10, 10, 15, 0.8); backdrop-filter: blur(12px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--neutral-800); z-index: 1000; }
+        .dashboard-header h1 { font-family: 'Outfit'; font-size: 1.5rem; margin: 0; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-back { display: flex; align-items: center; gap: 0.5rem; color: var(--brand-400); text-decoration: none; font-weight: 600; font-family: 'Inter'; background: rgba(196, 124, 58, 0.1); padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.2s ease; }
+        .btn-back:hover { background: rgba(196, 124, 58, 0.2); }
+        
+        #map-container { flex: 1; width: 100%; position: relative; }
+        #live-map { height: 100%; width: 100%; }
+
+        .bus-marker-icon { background: var(--brand-500); color: white; border-radius: 50%; width: 40px !important; height: 40px !important; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; border: 3px solid #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .marker-inactive { background: var(--neutral-400); }
+        .marker-active { background: #10b981; animation: pulse 2s infinite; }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .bus-tooltip { font-family: 'Inter'; }
+        .bus-tooltip strong { display: block; font-family: 'Outfit'; font-size: 1.1rem; color: #111; }
+        .status-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; color: #fff; margin-top: 5px; }
+        .status-active { background: #10b981; }
+        .status-inactive { background: #ef4444; }
+
+        /* Tracking Route UI */
+        #eta-overlay { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.95); color: #111; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-family: 'Inter', sans-serif; font-size: 1rem; z-index: 2000; display: flex; align-items: center; gap: 0.8rem; border-left: 4px solid var(--brand-500); width: 90%; max-width: 400px; }
+        #eta-overlay.hidden { display: none !important; }
+    </style>
+</head>
+
+<body>
+    
+    <header class="dashboard-header">
+        <h1><i class="fa-solid fa-satellite-dish" style="color: #ef4444;"></i> Live Bus Dashboard</h1>
+        <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+    </header>
+
+    <div id="map-container">
+        <!-- Leaflet Map goes here -->
+        <div id="live-map"></div>
+        
+        <!-- ETA Tracking Banner -->
+        <div id="eta-overlay" class="hidden">
+            <i class="fa-solid fa-spinner fa-spin" style="color: var(--brand-500); font-size: 1.2rem;"></i> 
+            <span id="eta-text-content">Calculating Route & ETA...</span>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="dashboard.js"></script>
+
+</body>
+</html>
