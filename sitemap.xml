@@ -4,17 +4,25 @@
   <!-- Main Landing Page -->
   <url>
     <loc>https://vastbus.vercel.app/</loc>
-    <lastmod>2026-04-13</lastmod>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://vastbus.vercel.app/about.html</loc>
+    <lastmod>2026-04-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <!-- Live Dashboard Page -->
   <url>
     <loc>https://vastbus.vercel.app/live-dashboard.html</loc>
-    <lastmod>2026-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-04-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
   </url>
   
 </urlset>

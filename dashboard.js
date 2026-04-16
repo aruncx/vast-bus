@@ -1,6 +1,16 @@
 // dashboard.js
 // Handles displaying all active buses on the live dashboard
 
+/* ── Casual Security Measures ── */
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.onkeydown = (e) => {
+    if (e.keyCode == 123 || 
+       (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
+       (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+        return false;
+    }
+};
+
 // TODO: Replace with your actual Firebase Project Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyAfQWJqU-jo1OQMukEm9fqwE6evuCeFX9w",

@@ -1619,16 +1619,46 @@ tbody tr:last-child td {
     .nav-pills {
         gap: 4px;
     }
-
     .nav-pill {
-        padding: 6px 10px;
-        font-size: .78rem;
+        padding: 4px 10px; /* Tighter padding for a sleeker look */
+        font-size: 0.82rem;
+        min-height: 32px; /* Thinner height */
+        border-radius: 8px; /* More defined rectangle-pill */
+        gap: 5px;
+        white-space: nowrap;
+    }
+
+    .nav-pill i {
+        font-size: 0.85rem; /* Smaller icons to match */
+    }
+
+    .nav-social-link {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
     }
 }
 
-/* ══════════════════════════════════════════
-   BACKGROUND ILLUSTRATIONS
-══════════════════════════════════════════ */
+/* ══════════════════ ABOUT PAGE SPECIFICS ══════════════════ */
+.about-hero {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top right, rgba(196, 124, 58, 0.1), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.05), transparent 40%);
+}
+
+.about-page .section-heading {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.about-page .section-label {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
 .section-bg-illustration {
     position: absolute;
     bottom: -15%;

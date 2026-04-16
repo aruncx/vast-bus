@@ -1,4 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
+    /* ── Casual Security Measures ── */
+    // Prevent right-click context menu
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Prevent common inspection shortcuts (F12, Ctrl+Shift+I, Ctrl+U)
+    document.onkeydown = (e) => {
+        if (e.keyCode == 123 || 
+           (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
+           (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+            return false;
+        }
+    };
     // DOM Elements
     const busSelect = document.getElementById('bus-select');
     const stopSearch = document.getElementById('stop-search');
