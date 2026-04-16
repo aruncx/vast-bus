@@ -98,7 +98,7 @@ function renderTicker(alerts) {
     if (hasHigh) containerClass = 'alert-container-high';
     else if (hasMedium) containerClass = 'alert-container-medium';
 
-    bannerContainer.style.display = 'block';
+    bannerContainer.style.display = 'flex';
     bannerContainer.className = `alert-banner-container ${containerClass}`;
 
     // Join all messages into a single string with separators
@@ -107,16 +107,10 @@ function renderTicker(alerts) {
         if (alert.Priority === 'High') icon = '<i class="fa-solid fa-triangle-exclamation"></i>';
         if (alert.Priority === 'Medium') icon = '<i class="fa-solid fa-circle-exclamation"></i>';
 
-        return `<span class="alert-item priority-${alert.Priority.toLowerCase()}">${icon} <strong>${alert.Priority.toUpperCase()} Alert:</strong> ${alert.Message}</span>`;
-    }).join('<span class="alert-separator">•</span>');
+        return `<span class="alert-item priority-${alert.Priority.toLowerCase()}">${icon} <strong>${alert.Priority.toUpperCase()} ALERT:</strong> ${alert.Message}</span>`;
+    }).join('<span class="alert-separator"></span>');
 
     bannerContainer.innerHTML = `
-        <div class="alert-label">
-            <i class="fa-solid fa-bell fa-shake"></i> Live Updates
-            <button class="alert-close-btn" aria-label="Dismiss Alert" onclick="document.getElementById('alert-banner-container').style.display='none'">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
         <div class="alert-ticker-wrap">
             <div class="alert-ticker">
                 ${formattedMessages}
@@ -126,6 +120,12 @@ function renderTicker(alerts) {
                 ${formattedMessages}
             </div>
         </div>
+        <div class="alert-label">
+            <i class="fa-solid fa-bell"></i> LIVE UPDATES
+        </div>
+        <button class="alert-close-btn" aria-label="Dismiss Alert" onclick="document.getElementById('alert-banner-container').style.display='none'">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
     `;
 }
 

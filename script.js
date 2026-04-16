@@ -261,6 +261,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Handle deep-linking search ?search=...
+    function handleDeepLinkSearch() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQuery = urlParams.get('search');
+        if (searchQuery) {
+            stopSearch.value = searchQuery;
+            // Trigger input event to show results
+            stopSearch.dispatchEvent(new Event('input'));
+            
+            // Scroll to search section
+            const searchSection = document.getElementById('search-section');
+            if (searchSection) {
+                searchSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }
+
     // Run initialization
     initBusSelect();
+    handleDeepLinkSearch();
 });

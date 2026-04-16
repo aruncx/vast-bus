@@ -4,7 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Bus Dashboard — VAST Transport</title>
+
+    <!-- Basic SEO -->
+    <title>Live Bus Dashboard | VAST Bus Routes & Transport System</title>
+    <meta name="description" content="Track VAST college buses in real-time. Live location updates and ETA for students and staff of Vidya Academy of Science and Technology.">
+
+    <!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
+    <meta property="og:title" content="VAST Bus Live Tracking">
+    <meta property="og:description" content="Monitor your college bus location in real-time. Fast, simple, and mobile-friendly tracking for VAST students.">
+    <meta property="og:url" content="https://vastbus.vercel.app/live-dashboard.html">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://vastbus.vercel.app/preview.png">
+
+    <!-- Optional but Recommended -->
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://vastbus.vercel.app/live-dashboard.html">
     
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
@@ -27,8 +41,8 @@
     <style>
         body { margin: 0; padding: 0; background: var(--neutral-900); color: #fff; display: flex; flex-direction: column; height: 100vh; }
         .dashboard-header { background: rgba(10, 10, 15, 0.8); backdrop-filter: blur(12px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--neutral-800); z-index: 1000; }
-        .dashboard-header h1 { font-family: 'Outfit'; font-size: 1.5rem; margin: 0; display: flex; align-items: center; gap: 0.5rem; }
-        .btn-back { display: flex; align-items: center; gap: 0.5rem; color: var(--brand-400); text-decoration: none; font-weight: 600; font-family: 'Inter'; background: rgba(196, 124, 58, 0.1); padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.2s ease; }
+        .dashboard-header h1 { font-family: 'Outfit'; font-size: clamp(1.25rem, 4vw, 1.8rem); margin: 0; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-back { display: flex; align-items: center; gap: 0.5rem; color: var(--brand-400); text-decoration: none; font-weight: 600; font-family: 'Inter'; background: rgba(196, 124, 58, 0.1); padding: 0.75rem 1.25rem; border-radius: 8px; transition: all 0.2s ease; font-size: 1rem; min-height: 44px; }
         .btn-back:hover { background: rgba(196, 124, 58, 0.2); }
         
         #map-container { flex: 1; width: 100%; position: relative; }
@@ -46,7 +60,7 @@
 
         .bus-tooltip { font-family: 'Inter'; }
         .bus-tooltip strong { display: block; font-family: 'Outfit'; font-size: 1.1rem; color: #111; }
-        .status-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; color: #fff; margin-top: 5px; }
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 1rem; font-weight: bold; color: #fff; margin-top: 5px; }
         .status-active { background: #10b981; }
         .status-inactive { background: #ef4444; }
 

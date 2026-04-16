@@ -179,8 +179,8 @@ a {
     left: 0;
     right: 0;
     z-index: 1000;
-    padding: 0.1rem 2rem;
-    background: #000000; /* Solid black as requested */
+    padding: 0.3rem 1.5rem; /* Slightly tighter top/bottom padding */
+    background: #000000;
     backdrop-filter: blur(16px) saturate(1.4);
     -webkit-backdrop-filter: blur(16px) saturate(1.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -223,17 +223,20 @@ a {
 
 .nav-title {
     font-family: var(--font-display);
-    font-size: 1.1rem;
+    font-size: 1.45rem;
     font-weight: 800;
+    line-height: 1.15;
     color: #fff;
-    letter-spacing: .04em;
+    letter-spacing: -0.01em;
 }
 
 .nav-sub {
-    font-size: 0.7rem;
-    color: var(--brand-200);
-    letter-spacing: .05em;
+    font-size: 0.9rem; /* Slightly reduced for hierarchy, but kept larger in mobile media query */
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: .08em;
     text-transform: uppercase;
+    font-weight: 600;
+    line-height: 1.3;
 }
 
 .nav-right {
@@ -249,15 +252,16 @@ a {
 .nav-pill {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 7px 16px;
+    gap: 8px;
+    padding: 10px 20px;
     border-radius: var(--r-full);
-    font-size: 0.82rem;
+    font-size: 1rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.7);
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all var(--t-normal);
+    min-height: 44px;
 }
 
 .nav-pill:hover,
@@ -279,10 +283,10 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border-radius: var(--r-full);
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     color: rgba(255, 255, 255, 0.65);
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -423,11 +427,11 @@ a {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 14px;
+    padding: 8px 16px;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: var(--r-full);
-    font-size: 0.76rem;
+    font-size: 1rem;
     color: var(--brand-200);
     letter-spacing: .04em;
     text-transform: uppercase;
@@ -493,11 +497,11 @@ a {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 16px;
+    padding: 10px 20px;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.10);
     border-radius: var(--r-full);
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(6px);
@@ -505,7 +509,7 @@ a {
 
 .stat-pill i {
     color: var(--amber);
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 .hero-cta {
@@ -723,7 +727,7 @@ a {
 }
 
 .feature-card p {
-    font-size: .9rem;
+    font-size: 1rem;
     color: var(--neutral-400);
     line-height: 1.65;
 }
@@ -818,12 +822,12 @@ a {
 }
 
 .control-group label {
-    font-size: .82rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--neutral-600);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     text-transform: uppercase;
     letter-spacing: .04em;
 }
@@ -848,11 +852,11 @@ a {
 
 input[type="text"] {
     width: 100%;
-    padding: .85rem 2.8rem .85rem 1rem;
+    padding: 1rem 2.8rem 1rem 1.25rem;
     border: 1.5px solid var(--neutral-100);
     border-radius: var(--r-md);
     font-family: var(--font-body);
-    font-size: .95rem;
+    font-size: 1rem;
     color: var(--neutral-900);
     background: #fff;
     transition: all var(--t-normal);
@@ -881,11 +885,11 @@ input[type="text"]:focus {
 
 select {
     width: 100%;
-    padding: .85rem 2.8rem .85rem 1rem;
+    padding: 1rem 2.8rem 1rem 1.25rem;
     border: 1.5px solid var(--neutral-100);
     border-radius: var(--r-md);
     font-family: var(--font-body);
-    font-size: .95rem;
+    font-size: 1rem;
     color: var(--neutral-900);
     background: #fff;
     appearance: none;
@@ -1119,9 +1123,10 @@ select:focus {
 
 .table-container {
     border-radius: var(--r-md);
-    overflow: hidden;
+    overflow-x: auto;
     border: 1px solid var(--neutral-100);
     margin-bottom: .75rem;
+    -webkit-overflow-scrolling: touch;
 }
 
 table {
@@ -1147,7 +1152,7 @@ th i {
 
 td {
     padding: .85rem 1rem;
-    font-size: .9rem;
+    font-size: 1rem;
     border-bottom: 1px solid var(--neutral-50);
     color: var(--neutral-700);
 }
@@ -1284,20 +1289,17 @@ tbody tr:last-child td {
 ══════════════════════════════════════════ */
 .alert-banner-container {
     width: 100%;
-    padding: 0.4rem 1.5rem; /* Reduced vertical padding for a thinner look */
+    height: 40px;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    justify-content: space-between;
     z-index: 990;
-    position: relative; /* Relative within the fixed navbar */
+    position: relative;
     overflow: hidden;
-    background: rgba(10, 10, 15, 0.88); /* Deep glass / matches scrolled navbar */
-    backdrop-filter: blur(20px) saturate(1.8);
-    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    background: #0a0a0f;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.05); /* Default subtle border */
-    color: #ffffff; /* High contrast text */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+    color: #ffffff;
     transition: all var(--t-normal);
 }
 
@@ -1317,31 +1319,37 @@ tbody tr:last-child td {
 }
 
 .alert-label {
-    font-weight: 700;
-    font-size: 0.75rem; /* Slightly smaller for a tighter header */
+    font-weight: 800;
+    font-size: 0.85rem;
     text-transform: uppercase;
     white-space: nowrap;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding-right: 12px;
-    border-right: 1px solid rgba(255,255,255,0.1);
+    padding: 0 15px;
+    background: #0a0a0f;
+    height: 100%;
+    z-index: 20;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    color: #ef4444; /* Default to red for "Live Updates" visibility */
+    flex-shrink: 0;
 }
 
 .alert-close-btn {
-    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+    background: #1a1a24;
     border: none;
     color: #ffffff;
     cursor: pointer;
-    font-size: 0.7rem; /* Small, concise close button */
-    height: 20px;
-    width: 20px;
+    font-size: 0.9rem;
+    height: 40px;
+    width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 4px;
-    margin-left: 8px;
-    transition: background var(--t-fast);
+    transition: all var(--t-fast);
+    z-index: 30;
+    flex-shrink: 0;
 }
 
 .alert-close-btn:hover {
@@ -1359,6 +1367,7 @@ tbody tr:last-child td {
     white-space: nowrap;
     mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
+    min-width: 0;
 }
 
 .alert-ticker {
@@ -1377,7 +1386,7 @@ tbody tr:last-child td {
 }
 
 .alert-item {
-    font-size: 0.95rem;
+    font-size: 1rem;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -1393,14 +1402,15 @@ tbody tr:last-child td {
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 0.05em;
-    padding: 2px 6px;
+    padding: 4px 8px;
     border-radius: 4px;
-    margin-right: 4px;
+    margin: 0 4px;
+    font-weight: 900;
 }
 
-.priority-high strong { background: rgba(239, 68, 68, 0.3); color: #ef4444; }
-.priority-medium strong { background: rgba(245, 158, 11, 0.3); color: #f59e0b; }
-.priority-low strong { background: rgba(16, 185, 129, 0.3); color: #10b981; }
+.priority-high strong { background: #6b2121; color: #fecaca; border: 1px solid rgba(239, 68, 68, 0.3); }
+.priority-medium strong { background: #92400e; color: #fef3c7; border: 1px solid rgba(245, 158, 11, 0.3); }
+.priority-low strong { background: #065f46; color: #d1fae5; border: 1px solid rgba(16, 185, 129, 0.3); }
 
 .alert-separator {
     margin: 0 2.5rem;
@@ -1466,7 +1476,7 @@ tbody tr:last-child td {
 }
 
 .toast-title {
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 700;
     margin-bottom: 3px;
     text-transform: uppercase;
@@ -1476,7 +1486,7 @@ tbody tr:last-child td {
 .toast-high .toast-title { color: #ef4444; }
 
 .toast-message {
-    font-size: 0.85rem;
+    font-size: 1rem;
     color: var(--neutral-600);
     line-height: 1.45;
 }
@@ -1525,16 +1535,30 @@ tbody tr:last-child td {
     }
 
     .nav-logo {
-        width: 50px;
-        height: 50px;
+        width: 44px;
+        height: 44px;
     }
 
     .nav-title {
-        font-size: 0.95rem;
+        font-size: 1.05rem;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #features-section {
+        order: 9; /* Position near the bottom on mobile */
+    }
+
+    .footer {
+        order: 10; /* Keep footer at the absolute bottom */
     }
 
     .nav-sub {
-        font-size: 0.65rem;
+        font-size: 0.82rem; /* Reduced to balance with title */
+        letter-spacing: 0.05em;
     }
 
     .hero {
