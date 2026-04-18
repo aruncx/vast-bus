@@ -175,29 +175,39 @@ function sendLocalTestNotification() {
 
 // Copy the latest FCM token to clipboard for debugging
 async function copyPushToken() {
+    console.log('[FCM Debug] Copy button clicked. latestToken state:', latestToken);
+    
     if (!latestToken) {
-        showToast("Fetching token... please wait.", "info");
+        showToast("Fetching your unique Token... please wait.", "info");
         const success = await requestNotificationPermission();
-        if (!success) return;
+        if (!success) {
+            console.error('[FCM Debug] Could not fetch token for copying.');
+            showToast("Failed to fetch token. Are you on HTTPS?", "error");
+            return;
+        }
     }
 
+    // Attempt to copy to clipboard
     try {
+        console.log('[FCM Debug] Attempting clipboard write...');
         await navigator.clipboard.writeText(latestToken);
+        
         const btn = document.getElementById('btn-copy-token');
         if (btn) {
-            const originalText = btn.innerHTML;
+            const originalInner = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-            btn.style.background = "#10b981"; // Emerald
+            btn.style.background = "#059669"; // Emerald 600
+            
+            showToast("Token copied to clipboard! ✅", "success");
             
             setTimeout(() => {
-                btn.innerHTML = originalText;
+                btn.innerHTML = originalInner;
                 btn.style.background = "rgba(255,255,255,0.1)";
-            }, 2000);
+            }, 3000);
         }
-        showToast("Token copied to clipboard! ✅", "success");
     } catch (err) {
-        console.error('Failed to copy: ', err);
-        // Fallback for non-clipboard browsers
-        prompt("Your Token (Copy manually):", latestToken);
+        console.warn('[FCM Debug] Clipboard API failed, using fallback prompt:', err);
+        // Fallback: Show it in a prompt so the user can manual copy
+        window.prompt("Copy this Token to your clipboard manualy:", latestToken);
     }
 }
