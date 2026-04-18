@@ -274,7 +274,7 @@
 
             <div id="tracking-modal-body">
                 <!-- User Profile (Shown when logged in) -->
-                <div id="user-profile" class="hidden" style="display: none; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 2rem;">
+                <div id="user-profile" style="display: none; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 2rem;">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <img id="user-photo" src="" alt="" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--amber);">
                         <div style="display: flex; flex-direction: column;">
@@ -307,7 +307,7 @@
             </div>
 
             <!-- GPS Question (Hidden until signed in) -->
-            <div id="gps-question-container" class="hidden" style="display: none;">
+            <div id="gps-question-container" style="display: none;">
                 <p class="modal-subtitle" style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem; color: rgba(255,255,255,0.7);">Are you currently <strong>inside</strong> the bus?</p>
                 
                 <div class="tracking-options">
@@ -338,7 +338,7 @@
             </div>
 
             <!-- YES FLOW: Inside Bus -->
-            <div class="modal-body hidden" id="inside-bus-flow">
+            <div class="modal-body" id="inside-bus-flow" style="display: none;">
                 <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">Select the bus you are currently in:</p>
                 <select id="inside-bus-select"
                     style="margin-bottom: 1.5rem; width: 100%; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff;"></select>
@@ -347,7 +347,7 @@
             </div>
 
             <!-- NO FLOW: Tracking Bus -->
-            <div class="modal-body hidden" id="tracking-bus-flow">
+            <div class="modal-body" id="tracking-bus-flow" style="display: none;">
                 <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">Select the bus you want to track:</p>
                 <select id="tracking-bus-select"
                     style="margin-bottom: 1.5rem; width: 100%; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff;"></select>

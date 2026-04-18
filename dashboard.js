@@ -68,7 +68,6 @@ if (auth) {
             }, 3000);
         }
     });
-}
 
 } else {
     // If Firebase Auth failed to initialize, prevent infinite loading
@@ -81,7 +80,6 @@ if (auth) {
         setTimeout(() => { window.location.href = 'index.html'; }, 3000);
     };
 }
-
 // Wrap existing logic into initDashboard function
 let isDashboardInitialized = false;
 function initDashboard() {
