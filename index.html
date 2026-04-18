@@ -23,6 +23,15 @@
     <link rel="canonical" href="https://vastbus.vercel.app/">
     <meta name="google-site-verification" content="Hl1G1R66J_DsaQzUZAbvL7QP29hYVeh4N2TsKoBI6Vk" />
 
+    <!-- PWA Configurations -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#171717">
+    <!-- Apple PWA (iOS Splash Screen & Install Support) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="VAST Bus">
+    <link rel="apple-touch-icon" href="assets/icon-180.png">
+
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
@@ -112,6 +121,20 @@
 </head>
 
 <body>
+
+    <!-- iOS PWA Install Banner (only shows on iPhone/iPad Safari, once) -->
+    <div id="ios-install-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; padding: 1rem 1.25rem; background: rgba(15,15,20,0.96); backdrop-filter: blur(20px); border-top: 1px solid rgba(196,124,58,0.3); box-shadow: 0 -4px 30px rgba(0,0,0,0.4); animation: slideUpBanner 0.4s ease;">
+        <div style="display:flex; align-items:center; gap: 1rem; max-width: 480px; margin: 0 auto;">
+            <img src="assets/icon-180.png" alt="VAST Bus" style="width:48px; height:48px; border-radius:12px; flex-shrink:0;">
+            <div style="flex:1;">
+                <p style="margin:0; font-family:'Outfit',sans-serif; font-weight:700; color:#fff; font-size:0.95rem;">Install VAST Bus App</p>
+                <p style="margin:4px 0 0; font-family:'Inter',sans-serif; color:rgba(255,255,255,0.6); font-size:0.8rem;">
+                    Tap <strong style="color:#c47c3a;"><i class="fa-solid fa-arrow-up-from-bracket"></i> Share</strong> then <strong style="color:#c47c3a;">"Add to Home Screen"</strong>
+                </p>
+            </div>
+            <button id="ios-banner-close" style="background:rgba(255,255,255,0.1); border:none; color:#fff; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content: center; flex-shrink:0;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
 
     <!-- ══════════════════ NAVBAR ══════════════════ -->
     <nav class="navbar" id="navbar">
@@ -398,6 +421,8 @@
                             <ul id="search-results" class="autocomplete-results hidden"></ul>
                         </div>
                     </div>
+                    <!-- Last Updated Badge (Route Search) -->
+                    <p class="data-last-updated" style="display:none; font-size:0.78rem; color: rgba(255,255,255,0.35); margin: 0.5rem 0 0; font-family:'Inter',sans-serif;"></p>
 
                     <div class="divider"><span>OR</span></div>
 
@@ -434,6 +459,9 @@
                 </div>
                 <div class="route-banner-right">
                     <span id="route-badge" class="route-badge">Bus No</span>
+                    <button id="btn-share-route" class="btn-share">
+                        <i class="fa-solid fa-share-nodes"></i> Share
+                    </button>
                 </div>
             </div>
 
@@ -528,6 +556,8 @@
                             <ul id="fee-search-results" class="autocomplete-results hidden"></ul>
                         </div>
                     </div>
+                    <!-- Last Updated Badge (Fee Search) -->
+                    <p class="data-last-updated" style="display:none; font-size:0.78rem; color: rgba(255,255,255,0.35); margin: 0.5rem 0 0; font-family:'Inter',sans-serif;"></p>
 
                     <!-- Fee Display -->
                     <div class="control-group" style="flex: 1;">
@@ -540,6 +570,13 @@
                         </div>
                     </div>
 
+                </div>
+
+                <!-- Fee Share Button Container (initially hidden) -->
+                <div id="fee-share-box" class="fee-share-container hidden">
+                    <button id="btn-share-fee" class="btn-share">
+                        <i class="fa-solid fa-share-nodes"></i> Share Fee Info
+                    </button>
                 </div>
             </div>
         </div>
@@ -574,7 +611,6 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <!-- Scripts (order matters) -->
-    <script src="data.js"></script>
     <script src="script.js"></script>
     <script src="alerts.js"></script>
     <script src="bus-cursor.js"></script>
@@ -588,15 +624,14 @@
             navbar.classList.toggle('scrolled', window.scrollY > 40);
         });
 
-        // Populate hero stat counts after data.js loads
-        window.addEventListener('DOMContentLoaded', () => {
-            if (typeof busData !== 'undefined') {
-                document.getElementById('stat-routes').textContent = busData.length;
-                const stops = new Set();
-                busData.forEach(r => r.stops.forEach(s => stops.add(s.name)));
-                document.getElementById('stat-stops').textContent = 380;
-            }
-        });
+        // Initialize PWA Service Worker for Offline Mode
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
 
         // Scroll-reveal using IntersectionObserver
         const revealEls = document.querySelectorAll('.animate-fade-up');
@@ -647,6 +682,34 @@
             });
         }
     </script>
+
+    <!-- iOS Install Banner Logic -->
+    <script>
+        (function() {
+            // Detect iOS Safari (not Chrome on iOS, which can't install PWAs)
+            const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+            const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            const isDismissed = localStorage.getItem('ios-banner-dismissed');
+
+            if (isIos && !isInStandaloneMode && !isDismissed) {
+                const banner = document.getElementById('ios-install-banner');
+                // Delay slightly so page content loads first
+                setTimeout(() => { banner.style.display = 'block'; }, 3000);
+
+                document.getElementById('ios-banner-close').addEventListener('click', () => {
+                    banner.style.display = 'none';
+                    localStorage.setItem('ios-banner-dismissed', '1');
+                });
+            }
+        })();
+    </script>
+
+    <style>
+        @keyframes slideUpBanner {
+            from { transform: translateY(100%); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+    </style>
 
 </body>
 

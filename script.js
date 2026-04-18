@@ -27,6 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const feeStopSearch = document.getElementById('fee-stop-search');
     const feeSearchResults = document.getElementById('fee-search-results');
     const feeDisplay = document.getElementById('fee-display');
+    const feeShareBox = document.getElementById('fee-share-box');
+    const btnShareRoute = document.getElementById('btn-share-route');
+    const btnShareFee = document.getElementById('btn-share-fee');
+
+    // State
+    let currentRouteIndex = null;
+    let currentSelectedStop = null;
 
 
     // College Location
@@ -44,6 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render schedule for a selected route
     function renderSchedule(routeIndex) {
+        currentRouteIndex = routeIndex;
+        currentSelectedStop = null;
         const route = busData[routeIndex];
         if (!route) return;
 
@@ -80,6 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Highlight row
                 document.querySelectorAll('#schedule-body tr').forEach(row => row.classList.remove('selected'));
                 tr.classList.add('selected');
+
+                currentSelectedStop = {
+                    name: stop.stop_name,
+                    time: formattedTime
+                };
 
                 // Update map
                 updateMapDirectons(stop.stop_name);
@@ -175,6 +189,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Render schedule
                     renderSchedule(match.routeIndex);
 
+                    // Find stop time for state
+                    const route = busData[match.routeIndex];
+                    const targetStop = route.stops.find(s => s.stop_name === match.stopName);
+                    if (targetStop) {
+                        currentSelectedStop = {
+                            name: targetStop.stop_name,
+                            time: targetStop.time // Note: formattedTime is calculated inside schedule rendering usually, we can format here if needed
+                        };
+                        // We need the formatted time to match the table. 
+                        // Let's format it now.
+                        if (targetStop.time && targetStop.time !== 'nan') {
+                            let [hours, minutes] = targetStop.time.toString().split('.');
+                            if (!minutes) minutes = '00';
+                            else if (minutes.length === 1) minutes += '0';
+                            hours = hours.padStart(2, '0');
+                            currentSelectedStop.time = `${hours}:${minutes} AM`;
+                        }
+                    }
+
                     // Highlight the specific stop and show map
                     setTimeout(() => {
                         const rows = scheduleBody.querySelectorAll('tr');
@@ -249,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     feeStopSearch.value = match.stopName;
                     feeDisplay.value = (match.fees && match.fees !== '-') ? `${match.fees} \u20B9` : 'Fee Data Unavailable';
                     feeSearchResults.classList.add('hidden');
+                    if (feeShareBox) feeShareBox.classList.remove('hidden');
                 });
 
                 feeSearchResults.appendChild(li);
@@ -290,7 +324,95 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Run initialization
-    initBusSelect();
-    handleDeepLinkSearch();
+    // Global state for dynamically fetched data
+    let busData = [];
+
+    // ── Share Functionality ──
+
+    async function shareData(text, title) {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: title,
+                    text: text,
+                    url: window.location.href
+                });
+            } catch (err) {
+                console.log('Share failed:', err);
+            }
+        } else {
+            // Fallback: Copy to clipboard
+            try {
+                await navigator.clipboard.writeText(`${text}\n\nCheck it out at: ${window.location.href}`);
+                alert('Details copied to clipboard!');
+            } catch (err) {
+                console.error('Copy failed:', err);
+            }
+        }
+    }
+
+    if (btnShareRoute) {
+        btnShareRoute.addEventListener('click', () => {
+            const route = busData[currentRouteIndex];
+            if (!route) return;
+
+            const firstStop = route.stops[0];
+            const departureTime = firstStop.time || "N/A";
+            
+            let shareText = `🚌 VAST Bus Route Info\n\n`;
+            shareText += `Bus No: ${route.bus_no} — ${route.route_name.replace(`BUS ROUTE NO.${route.bus_no} `, '')} Route\n`;
+            shareText += `Departure: ${departureTime} AM from ${firstStop.stop_name}\n\n`;
+
+            if (currentSelectedStop) {
+                shareText += `📍 My Stop: ${currentSelectedStop.name}\n`;
+                shareText += `⏰ Pickup Time: ${currentSelectedStop.time}\n\n`;
+            }
+
+            shareText += `Check all VAST bus routes at:`;
+            
+            shareData(shareText, 'VAST Bus Route');
+        });
+    }
+
+    if (btnShareFee) {
+        btnShareFee.addEventListener('click', () => {
+            if (!feeStopSearch.value || !feeDisplay.value) return;
+
+            let shareText = `🎓 VAST College Bus Fee\n\n`;
+            shareText += `📍 Boarding Point: ${feeStopSearch.value}\n`;
+            shareText += `💰 Semester Bus Fee: ${feeDisplay.value}\n\n`;
+            shareText += `Find your bus stop & fee at:`;
+
+            shareData(shareText, 'VAST Bus Fee');
+        });
+    }
+
+    // Run initialization via Fetch
+    async function initializeApp() {
+        try {
+            const response = await fetch('data.json');
+            const data = await response.json();
+            busData = data.routes;
+            initBusSelect();
+            handleDeepLinkSearch();
+            
+            // Populate hero stats
+            const statRoutes = document.getElementById('stat-routes');
+            if (statRoutes) statRoutes.textContent = busData.length;
+
+            // Show last updated date below both search sections
+            const lastUpdated = data.meta && data.meta.last_updated ? data.meta.last_updated : null;
+            if (lastUpdated) {
+                document.querySelectorAll('.data-last-updated').forEach(el => {
+                    el.textContent = `\u2713 Route & fee data last updated: ${lastUpdated}`;
+                    el.style.display = 'block';
+                });
+            }
+            
+        } catch (error) {
+            console.error("Failed to load route data:", error);
+        }
+    }
+
+    initializeApp();
 });

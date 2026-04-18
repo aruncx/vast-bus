@@ -2004,3 +2004,44 @@ tbody tr:last-child td {
         opacity: 0.05;
     }
 }
+
+/* ── Share Button ── */
+.btn-share {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: rgba(196, 124, 58, 0.1);
+    border: 1px solid rgba(196, 124, 58, 0.2);
+    border-radius: var(--r-md);
+    color: var(--brand-400);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--t-normal);
+}
+
+.btn-share:hover {
+    background: var(--brand-400);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md), var(--glow-brand);
+}
+
+.btn-share i {
+    font-size: 1rem;
+}
+
+/* Adjustments for placement */
+.route-banner-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.fee-share-container {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+}

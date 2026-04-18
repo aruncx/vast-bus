@@ -1,7 +1,9 @@
 User-agent: *
 Allow: /
 
-# Prevent indexing of purely technical or internal files (if any in future)
-Disallow: /data.js
+# Block technical/internal files from indexing
+Disallow: /sw.js
+Disallow: /manifest.json
+Disallow: /data.json
 
 Sitemap: https://vastbus.vercel.app/sitemap.xml

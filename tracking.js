@@ -28,6 +28,10 @@ let watchId = null;
 let currentBusId = null;
 let sessionId = null;
 
+// Route data – loaded once asynchronously from data.json (replaces old data.js)
+let busData = [];
+fetch('data.json').then(r => r.json()).then(data => { busData = data.routes || data; }).catch(e => console.error('tracking.js: Failed to load data.json', e));
+
 // DOM Elements
 const trackingModal = document.getElementById('tracking-modal');
 const closeTrackingModal = document.getElementById('close-tracking-modal');
@@ -198,7 +202,7 @@ if (btnInsideBus) {
 
         // Populate bus selection dropdown
         insideBusSelect.innerHTML = '<option value="" disabled selected>Select Bus Number</option>';
-        if (typeof busData !== 'undefined') {
+        if (busData.length > 0) {
             busData.forEach(route => {
                 const opt = document.createElement('option');
                 opt.value = route.bus_no;
@@ -224,7 +228,7 @@ if (btnTrackingBus) {
 
         // Populate bus selection dropdown
         trackingBusSelect.innerHTML = '<option value="" disabled selected>Select the Bus you want to track</option>';
-        if (typeof busData !== 'undefined') {
+        if (busData.length > 0) {
             busData.forEach(route => {
                 const opt = document.createElement('option');
                 opt.value = route.bus_no;
