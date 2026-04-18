@@ -156,9 +156,16 @@
             <div class="nav-right">
                 <div class="nav-pills">
                     <a href="#search-section" class="nav-pill active"><i class="fa-solid fa-magnifying-glass"></i> <span>Find Bus</span></a>
-                    <button id="pwa-notif-btn" title="Enable Notifications" class="nav-notif-btn" onclick="requestNotificationPermission()">
-                        <i class="fa-solid fa-bell"></i>
-                    </button>
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <button id="pwa-notif-btn" title="Enable Notifications" class="nav-notif-btn" onclick="requestNotificationPermission()">
+                            <i class="fa-solid fa-bell"></i>
+                        </button>
+                        <!-- Bell Hint Tooltip -->
+                        <div id="notif-hint" class="notif-hint hidden">
+                            <i class="fa-solid fa-caret-up hint-arrow"></i>
+                            Click to get VAST Alerts! 🔔
+                        </div>
+                    </div>
                     <a href="about.html" class="nav-pill"><i class="fa-solid fa-circle-info"></i> <span>About</span></a>
                 </div>
 
@@ -306,6 +313,13 @@
             </div>
 
             <div id="tracking-modal-body">
+                <!-- Diagnostic Test Button -->
+                <div style="text-align: right; margin-bottom: 20px; padding: 0 1rem;">
+                    <button onclick="sendLocalTestNotification()" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: var(--amber); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-vial"></i> Test System Notifications
+                    </button>
+                </div>
+
                 <!-- User Profile (Shown when logged in) -->
                 <div id="user-profile"
                     style="display: none; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 2rem;">
@@ -670,11 +684,21 @@
             navbar.classList.toggle('scrolled', window.scrollY > 40);
         });
 
-        // Initialize PWA Service Worker for Offline Mode
+        // Initialize PWA Service Worker for Offline Mode & FCM
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').catch(err => {
-                    console.log('ServiceWorker registration failed: ', err);
+                // Main Caching Worker
+                navigator.serviceWorker.register('sw.js').then(reg => {
+                    console.log('[SW Admin] Main Service Worker registered');
+                }).catch(err => {
+                    console.warn('[SW Admin] Main Service Worker registration failed: ', err);
+                });
+
+                // Firebase Messaging Worker
+                navigator.serviceWorker.register('firebase-messaging-sw.js').then(reg => {
+                    console.log('[FCM Admin] Messaging Service Worker registered');
+                }).catch(err => {
+                    console.warn('[FCM Admin] Messaging Service Worker registration failed: ', err);
                 });
             });
         }

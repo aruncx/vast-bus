@@ -20,26 +20,53 @@ function initNotifications() {
 
 // Request permission and get token
 async function requestNotificationPermission() {
+    console.log('[FCM Debug] Requesting permission...');
+    
+    // Hide the hint immediately on click
+    const hint = document.getElementById('notif-hint');
+    if (hint) {
+        hint.classList.add('hidden');
+        localStorage.setItem('vast_notif_hint_dismissed', 'true');
+    }
+
     try {
         const permission = await Notification.requestPermission();
+        console.log('[FCM Debug] Permission status:', permission);
+        
         if (permission === 'granted') {
-            console.log('Notification permission granted.');
+            console.log('[FCM Debug] Initializing messaging...');
+            if (!messaging) {
+                console.log('[FCM Debug] Messaging instance missing, re-initializing...');
+                initNotifications();
+            }
+
+            if (!messaging) {
+                console.error('[FCM Debug] Failed to initialize messaging service. Are you on HTTPS?');
+                showToast("FCM Init Failed. Check HTTPS.", "error");
+                return false;
+            }
+
+            console.log('[FCM Debug] Fetching token with VAPID:', vapidKey);
             const token = await messaging.getToken({ vapidKey: vapidKey });
+            
             if (token) {
-                console.log('FCM Token:', token);
+                console.log('[FCM Debug] Success! Token:', token);
                 await saveTokenToDatabase(token);
                 showToast("VAST Alerts Enabled! ✅", "success");
                 return true;
             } else {
-                console.warn('No registration token available. Request permission to generate one.');
+                console.warn('[FCM Debug] No token received. This could be a Service Worker registration issue.');
+                showToast("Failed to get token. Refresh and try again.", "error");
                 return false;
             }
         } else {
+            console.warn('[FCM Debug] Notification permission denied or dismissed.');
             showToast("Notifications blocked. Enable in browser settings.", "error");
             return false;
         }
     } catch (err) {
-        console.error('An error occurred while retrieving token. ', err);
+        console.error('[FCM Debug] Error during subscription flow:', err);
+        showToast("An error occurred. Check browser console.", "error");
         return false;
     }
 }
@@ -90,5 +117,56 @@ function setupTokenRefresh() {
 // Initialize when scripts load
 window.addEventListener('load', () => {
     // Wait a bit to ensure Firebase app is fully ready from tracking.js
-    setTimeout(initNotifications, 1000);
+    setTimeout(() => {
+        initNotifications();
+        checkAndShowHint();
+    }, 1000);
 });
+
+// Show the 'Click Bell' hint if the user hasn't subscribed yet
+function checkAndShowHint() {
+    const hint = document.getElementById('notif-hint');
+    if (!hint) return;
+
+    // Don't show if already granted, or if they dismissed it before
+    if (Notification.permission === 'granted' || localStorage.getItem('vast_notif_hint_dismissed')) {
+        hint.classList.add('hidden');
+    } else {
+        hint.classList.remove('hidden');
+    }
+}
+
+// Send a local test notification to verify OS-level permissions
+function sendLocalTestNotification() {
+    console.log('[FCM Debug] Triggering local test notification...');
+    
+    if (!("Notification" in window)) {
+        showToast("This browser does not support notifications.", "error");
+        return;
+    }
+
+    if (Notification.permission === "granted") {
+        const options = {
+            body: "If you can see this, your phone's notification system is working perfectly! ✅",
+            icon: './assets/icon-180.png',
+            badge: './assets/icon-32.png',
+            vibrate: [200, 100, 200],
+            tag: 'test-notification'
+        };
+        
+        // Use service worker if available for a more realistic test
+        if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.showNotification("VAST System Test 🧪", options);
+            });
+        } else {
+            // Fallback to basic window notification
+            new Notification("VAST System Test 🧪", options);
+        }
+        showToast("Test sent! Check your notification bar.", "success");
+    } else if (Notification.permission !== "denied") {
+        showToast("Please click the Bell icon first to grant permission.", "info");
+    } else {
+        showToast("Notifications are BLOCKED in your phone settings.", "error");
+    }
+}

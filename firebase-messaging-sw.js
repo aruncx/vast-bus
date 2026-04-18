@@ -20,15 +20,18 @@ const messaging = firebase.messaging();
 
 // Handle background messages
 messaging.onBackgroundMessage((payload) => {
-    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+    console.log('[FCM SW Debug] Received background message:', payload);
     
-    const notificationTitle = payload.notification.title;
+    // Fallback title/body if missing from payload
+    const notificationTitle = (payload.notification && payload.notification.title) || "VAST Bus Update";
     const notificationOptions = {
-        body: payload.notification.body,
-        icon: '/assets/icon-180.png',
-        badge: '/assets/icon-32.png',
-        data: payload.data
+        body: (payload.notification && payload.notification.body) || "New alert from the transport department.",
+        icon: './assets/icon-180.png',
+        badge: './assets/icon-32.png',
+        vibrate: [200, 100, 200],
+        data: payload.data,
+        tag: 'vast-bus-alert' // Prevents duplicate notifications
     };
 
-    self.registration.showNotification(notificationTitle, notificationOptions);
+    return self.registration.showNotification(notificationTitle, notificationOptions);
 });

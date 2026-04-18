@@ -237,6 +237,50 @@ a {
     font-size: 1.1rem;
 }
 
+/* Notification Hint Tooltip */
+.notif-hint {
+    position: absolute;
+    top: 55px;
+    right: -20px;
+    white-space: nowrap;
+    background: rgba(245, 158, 11, 0.95);
+    color: #000;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+    z-index: 1001;
+    animation: hintPulse 2s ease-in-out infinite;
+    pointer-events: none;
+    letter-spacing: 0.02em;
+}
+
+.hint-arrow {
+    position: absolute;
+    top: -10px;
+    right: 32px;
+    color: rgba(245, 158, 11, 0.95);
+    font-size: 1.2rem;
+}
+
+@keyframes hintPulse {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 1; }
+    50% { transform: translateY(5px) scale(0.98); opacity: 0.9; }
+}
+
+@media (max-width: 480px) {
+    .notif-hint {
+        top: 45px;
+        right: -10px;
+        font-size: 0.75rem;
+        padding: 6px 10px;
+    }
+    .hint-arrow {
+        right: 21px;
+    }
+}
+
 /* ══════════════════════════════════════════
    LIVE TRACKING MODAL & AUTH UI
 ══════════════════════════════════════════ */
@@ -1855,21 +1899,21 @@ tbody tr:last-child td {
 ══════════════════════════════════════════ */
 @media (max-width: 768px) {
     :root {
-        --nav-h: 70px;
+        --nav-h: 60px;
         /* Reduced navbar height */
     }
 
     .navbar {
-        padding: 0.1rem 1rem;
+        padding: 0 1rem;
     }
 
     .nav-logo {
-        width: 44px;
-        height: 44px;
+        width: 38px;
+        height: 38px;
     }
 
     .nav-title {
-        font-size: 1.05rem;
+        font-size: 0.95rem;
     }
 
     body {
@@ -1888,7 +1932,7 @@ tbody tr:last-child td {
     }
 
     .nav-sub {
-        font-size: 0.82rem;
+        font-size: 0.75rem;
         /* Reduced to balance with title */
         letter-spacing: 0.05em;
     }
