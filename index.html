@@ -305,6 +305,14 @@
         <div class="modal-content glass">
             <span class="close-modal" id="close-tracking-modal">&times;</span>
 
+            <!-- Diagnostic Test Button (Moved for Maximum Visibility) -->
+            <div style="text-align: center; margin: 15px 0;">
+                <button onclick="sendLocalTestNotification()" style="background: var(--brand-700); border: 1px solid var(--amber); color: #fff; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                    <i class="fa-solid fa-vial-circle-check"></i> Test System Notifications 🔔
+                </button>
+                <div style="font-size: 0.65rem; color: rgba(255,255,255,0.5); margin-top: 5px;">(Tap this to verify your Android settings)</div>
+            </div>
+
             <div class="modal-header" style="text-align: center; margin-bottom: 2rem;">
                 <h3
                     style="font-family: 'Outfit'; font-size: 1.8rem; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px;">
@@ -313,13 +321,6 @@
             </div>
 
             <div id="tracking-modal-body">
-                <!-- Diagnostic Test Button -->
-                <div style="text-align: right; margin-bottom: 20px; padding: 0 1rem;">
-                    <button onclick="sendLocalTestNotification()" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: var(--amber); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px;">
-                        <i class="fa-solid fa-vial"></i> Test System Notifications
-                    </button>
-                </div>
-
                 <!-- User Profile (Shown when logged in) -->
                 <div id="user-profile"
                     style="display: none; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 2rem;">
