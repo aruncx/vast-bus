@@ -123,16 +123,23 @@
 <body>
 
     <!-- iOS PWA Install Banner (only shows on iPhone/iPad Safari, once) -->
-    <div id="ios-install-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; padding: 1rem 1.25rem; background: rgba(15,15,20,0.96); backdrop-filter: blur(20px); border-top: 1px solid rgba(196,124,58,0.3); box-shadow: 0 -4px 30px rgba(0,0,0,0.4); animation: slideUpBanner 0.4s ease;">
+    <div id="ios-install-banner"
+        style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; padding: 1rem 1.25rem; background: rgba(15,15,20,0.96); backdrop-filter: blur(20px); border-top: 1px solid rgba(196,124,58,0.3); box-shadow: 0 -4px 30px rgba(0,0,0,0.4); animation: slideUpBanner 0.4s ease;">
         <div style="display:flex; align-items:center; gap: 1rem; max-width: 480px; margin: 0 auto;">
-            <img src="assets/icon-180.png" alt="VAST Bus" style="width:48px; height:48px; border-radius:12px; flex-shrink:0;">
+            <img src="assets/icon-180.png" alt="VAST Bus"
+                style="width:48px; height:48px; border-radius:12px; flex-shrink:0;">
             <div style="flex:1;">
-                <p style="margin:0; font-family:'Outfit',sans-serif; font-weight:700; color:#fff; font-size:0.95rem;">Install VAST Bus App</p>
-                <p style="margin:4px 0 0; font-family:'Inter',sans-serif; color:rgba(255,255,255,0.6); font-size:0.8rem;">
-                    Tap <strong style="color:#c47c3a;"><i class="fa-solid fa-arrow-up-from-bracket"></i> Share</strong> then <strong style="color:#c47c3a;">"Add to Home Screen"</strong>
+                <p style="margin:0; font-family:'Outfit',sans-serif; font-weight:700; color:#fff; font-size:0.95rem;">
+                    Install VAST Bus App</p>
+                <p
+                    style="margin:4px 0 0; font-family:'Inter',sans-serif; color:rgba(255,255,255,0.6); font-size:0.8rem;">
+                    Tap <strong style="color:#c47c3a;"><i class="fa-solid fa-arrow-up-from-bracket"></i> Share</strong>
+                    then <strong style="color:#c47c3a;">"Add to Home Screen"</strong>
                 </p>
             </div>
-            <button id="ios-banner-close" style="background:rgba(255,255,255,0.1); border:none; color:#fff; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content: center; flex-shrink:0;"><i class="fa-solid fa-xmark"></i></button>
+            <button id="ios-banner-close"
+                style="background:rgba(255,255,255,0.1); border:none; color:#fff; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content: center; flex-shrink:0;"><i
+                    class="fa-solid fa-xmark"></i></button>
         </div>
     </div>
 
@@ -288,51 +295,74 @@
     <div id="tracking-modal" class="modal hidden">
         <div class="modal-content glass">
             <span class="close-modal" id="close-tracking-modal">&times;</span>
-            
+
             <div class="modal-header" style="text-align: center; margin-bottom: 2rem;">
-                <h3 style="font-family: 'Outfit'; font-size: 1.8rem; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <h3
+                    style="font-family: 'Outfit'; font-size: 1.8rem; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px;">
                     <i class="fa-solid fa-satellite-dish" style="color: #ef4444;"></i> Live Bus Tracking
                 </h3>
             </div>
 
             <div id="tracking-modal-body">
                 <!-- User Profile (Shown when logged in) -->
-                <div id="user-profile" style="display: none; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 2rem;">
+                <div id="user-profile"
+                    style="display: none; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 2rem;">
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <img id="user-photo" src="" alt="" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--amber);">
+                        <img id="user-photo" src="" alt=""
+                            style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--amber);">
                         <div style="display: flex; flex-direction: column;">
-                            <span id="user-name" style="font-weight: 700; color: #fff; font-size: 1rem;">User Name</span>
-                            <span id="user-email" style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">email@vidyaacademy.ac.in</span>
+                            <span id="user-name" style="font-weight: 700; color: #fff; font-size: 1rem;">User
+                                Name</span>
+                            <span id="user-email"
+                                style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">email@vidyaacademy.ac.in</span>
                         </div>
                     </div>
-                    <button id="google-sign-out" class="btn-subtle" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: 0.2s;">
+                    <button id="google-sign-out" class="btn-subtle"
+                        style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: 0.2s;">
                         <i class="fa-solid fa-sign-out"></i>
                     </button>
                 </div>
 
                 <!-- Google Sign-in Card (Shown when logged out) -->
-                <div id="login-card" style="text-align: center; padding: 2.5rem 1.5rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; margin-bottom: 2rem;">
-                    <div style="background: rgba(245, 158, 11, 0.1); width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.8rem; color: var(--amber);">
+                <div id="login-card"
+                    style="text-align: center; padding: 2.5rem 1.5rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; margin-bottom: 2rem;">
+                    <div
+                        style="background: rgba(245, 158, 11, 0.1); width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.8rem; color: var(--amber);">
                         <i class="fa-solid fa-shield-halved"></i>
                     </div>
-                    <h3 style="font-family: 'Outfit'; font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem;">College Access Required</h3>
-                    <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5); margin-bottom: 2rem; line-height: 1.5;">To protect student privacy, please sign in using your <br><b>@vidyaacademy.ac.in</b> email address.</p>
-                    
+                    <h3 style="font-family: 'Outfit'; font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem;">College
+                        Access Required</h3>
+                    <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5); margin-bottom: 2rem; line-height: 1.5;">
+                        To protect student privacy, please sign in using your <br><b>@vidyaacademy.ac.in</b> email
+                        address.</p>
+
                     <!-- Branded Google Button -->
                     <button id="google-sign-in-btn" class="google-signin-button">
                         <div class="google-icon-box">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px"><path fill="#fbc02d" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#e53935" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4caf50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1565c0" d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px">
+                                <path fill="#fbc02d"
+                                    d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
+                                <path fill="#e53935"
+                                    d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
+                                <path fill="#4caf50"
+                                    d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
+                                <path fill="#1565c0"
+                                    d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
+                            </svg>
                         </div>
                         <span>Sign in with Google</span>
                     </button>
-                    <p id="auth-error-msg" style="color: #ef4444; font-size: 0.85rem; margin-top: 1rem; display: none;"></p>
+                    <p id="auth-error-msg" style="color: #ef4444; font-size: 0.85rem; margin-top: 1rem; display: none;">
+                    </p>
                 </div>
             </div>
 
             <!-- GPS Question (Hidden until signed in) -->
             <div id="gps-question-container" style="display: none;">
-                <p class="modal-subtitle" style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem; color: rgba(255,255,255,0.7);">Are you currently <strong>inside</strong> the bus?</p>
-                
+                <p class="modal-subtitle"
+                    style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem; color: rgba(255,255,255,0.7);">
+                    Are you currently <strong>inside</strong> the bus?</p>
+
                 <div class="tracking-options">
                     <button id="btn-inside-bus" class="tracking-option-btn">
                         <div class="opt-icon"><i class="fa-solid fa-bus"></i></div>
@@ -354,13 +384,16 @@
 
             <!-- Dashboard Link -->
             <div id="dashboard-link-container" style="display: none; margin-top: 1.5rem;">
-                <a href="live-dashboard.html" class="tracking-option-btn" style="text-decoration: none; width: 100%; border-color: rgba(196, 124, 58, 0.15); transition: 0.3s; background: rgba(0,0,0,0.2); flex-direction: row; align-items: center; justify-content: flex-start; padding: 1.25rem 1.5rem; gap: 1.5rem;">
-                    <div class="opt-icon" style="background: rgba(196, 124, 58, 0.08); color: #fff; width: 48px; height: 48px; min-width: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                <a href="live-dashboard.html" class="tracking-option-btn"
+                    style="text-decoration: none; width: 100%; border-color: rgba(196, 124, 58, 0.15); transition: 0.3s; background: rgba(0,0,0,0.2); flex-direction: row; align-items: center; justify-content: flex-start; padding: 1.25rem 1.5rem; gap: 1.5rem;">
+                    <div class="opt-icon"
+                        style="background: rgba(196, 124, 58, 0.08); color: #fff; width: 48px; height: 48px; min-width: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
                         <i class="fa-solid fa-chart-line"></i>
                     </div>
                     <div class="opt-text" style="text-align: left; display: flex; flex-direction: column; gap: 4px;">
                         <strong style="color: #fff; font-size: 1.1rem;">Live Dashboard</strong>
-                        <span style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">View all active buses on the map</span>
+                        <span style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">View all active buses on the
+                            map</span>
                     </div>
                 </a>
             </div>
@@ -370,8 +403,11 @@
                 <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">Select the bus you are currently in:</p>
                 <select id="inside-bus-select"
                     style="margin-bottom: 1.5rem; width: 100%; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff;"></select>
-                <button id="start-sharing-btn" style="width: 100%; background:#ef4444; color:#fff; border:none; padding:12px; border-radius:10px; cursor:pointer; font-weight:bold;">Start Sharing GPS</button>
-                <p id="sharing-status" style="margin-top: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.4); text-align: center;"></p>
+                <button id="start-sharing-btn"
+                    style="width: 100%; background:#ef4444; color:#fff; border:none; padding:12px; border-radius:10px; cursor:pointer; font-weight:bold;">Start
+                    Sharing GPS</button>
+                <p id="sharing-status"
+                    style="margin-top: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.4); text-align: center;"></p>
             </div>
 
             <!-- NO FLOW: Tracking Bus -->
@@ -379,8 +415,11 @@
                 <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">Select the bus you want to track:</p>
                 <select id="tracking-bus-select"
                     style="margin-bottom: 1.5rem; width: 100%; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff;"></select>
-                <button id="start-tracking-btn" style="width: 100%; background:#6366f1; color:#fff; border:none; padding:12px; border-radius:10px; cursor:pointer; font-weight:bold;">Track Bus Location</button>
-                <p id="tracking-status" style="margin-top: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.4); text-align: center;"></p>
+                <button id="start-tracking-btn"
+                    style="width: 100%; background:#6366f1; color:#fff; border:none; padding:12px; border-radius:10px; cursor:pointer; font-weight:bold;">Track
+                    Bus Location</button>
+                <p id="tracking-status"
+                    style="margin-top: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.4); text-align: center;"></p>
             </div>
         </div>
     </div>
@@ -420,9 +459,11 @@
                             <span class="input-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
                             <ul id="search-results" class="autocomplete-results hidden"></ul>
                         </div>
+                        <!-- Last Updated Badge (Route Search) -->
+                        <p class="data-last-updated"
+                            style="display:none; font-size:0.8rem; color: var(--neutral-400); margin: 0.4rem 0 0; font-family:'Inter',sans-serif; letter-spacing: 0.02em; font-weight: 500;">
+                        </p>
                     </div>
-                    <!-- Last Updated Badge (Route Search) -->
-                    <p class="data-last-updated" style="display:none; font-size:0.8rem; color: rgba(255,255,255,0.65); margin: 0.75rem 0 0; font-family:'Inter',sans-serif; letter-spacing: 0.02em;"></p>
 
                     <div class="divider"><span>OR</span></div>
 
@@ -486,7 +527,7 @@
                         </table>
                     </div>
                     <p class="table-hint"><i class="fa-solid fa-hand-pointer"></i> Tap a row to see directions on the
-                        map | Last updated: 1 March 2026.</p>
+                        map.</p>
                 </div>
 
                 <div class="map-card glass animate-fade-up delay-1" id="live-map-card">
@@ -555,9 +596,11 @@
                             <span class="input-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
                             <ul id="fee-search-results" class="autocomplete-results hidden"></ul>
                         </div>
+                        <!-- Last Updated Badge (Fee Search) -->
+                        <p class="data-last-updated"
+                            style="display:none; font-size:0.8rem; color: var(--neutral-400); margin: 0.4rem 0 0; font-family:'Inter',sans-serif; letter-spacing: 0.02em; font-weight: 500;">
+                        </p>
                     </div>
-                    <!-- Last Updated Badge (Fee Search) -->
-                    <p class="data-last-updated" style="display:none; font-size:0.8rem; color: rgba(255,255,255,0.65); margin: 0.75rem 0 0; font-family:'Inter',sans-serif; letter-spacing: 0.02em;"></p>
 
                     <!-- Fee Display -->
                     <div class="control-group" style="flex: 1;">
@@ -566,7 +609,7 @@
                         </label>
                         <div class="input-wrapper">
                             <input type="text" id="fee-display" placeholder="Amount will appear here" readonly
-                                style="background: rgba(255,255,255,0.08); color: var(--amber); font-weight: 800; font-size: 1.75rem; text-align: center; border: 1.5px solid rgba(196, 124, 58, 0.3); border-radius: var(--r-md); box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
+                                style="background: #fafafa; color: var(--brand-600); font-weight: 800; font-size: 1.75rem; text-align: center; border: 2px solid var(--brand-200); border-radius: var(--r-md); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
                         </div>
                     </div>
 
@@ -683,31 +726,77 @@
         }
     </script>
 
-    <!-- iOS Install Banner Logic -->
+    <!-- iOS/Android Install Banner Logic -->
     <script>
-        (function() {
-            // Detect iOS Safari (not Chrome on iOS, which can't install PWAs)
-            const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+        (function () {
+            // State for Android Install Prompt
+            let deferredPrompt;
+            const banner = document.getElementById('ios-install-banner');
+            const closeBtn = document.getElementById('ios-banner-close');
+            const bannerTitle = banner.querySelector('p');
+            const bannerText = banner.querySelector('p:last-of-type');
+
+            // 1. Detect iOS Safari (not Chrome on iOS, which can't install PWAs)
+            const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent) || 
+                          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-            const isDismissed = localStorage.getItem('ios-banner-dismissed');
+            const isDismissed = localStorage.getItem('pwa-banner-dismissed');
 
+            // 2. Handle iOS specifically (Manual Instructions)
             if (isIos && !isInStandaloneMode && !isDismissed) {
-                const banner = document.getElementById('ios-install-banner');
-                // Delay slightly so page content loads first
-                setTimeout(() => { banner.style.display = 'block'; }, 3000);
-
-                document.getElementById('ios-banner-close').addEventListener('click', () => {
-                    banner.style.display = 'none';
-                    localStorage.setItem('ios-banner-dismissed', '1');
-                });
+                setTimeout(() => { banner.style.display = 'block'; }, 4000);
             }
+
+            // 3. Handle Android/Chrome (Native Prompt Trigger)
+            window.addEventListener('beforeinstallprompt', (e) => {
+                // Prevent Chrome 67 and earlier from automatically showing the prompt
+                e.preventDefault();
+                // Stash the event so it can be triggered later.
+                deferredPrompt = e;
+                
+                if (!isDismissed) {
+                    // Update banner for Android
+                    bannerTitle.textContent = "Install VAST Bus App";
+                    bannerText.innerHTML = "Install on your device for fast, offline access to routes and fees.";
+                    
+                    // Show custom banner
+                    setTimeout(() => { banner.style.display = 'block'; }, 3000);
+
+                    // Clicking the banner (the text part) will trigger install
+                    banner.querySelector('div').style.cursor = 'pointer';
+                    banner.querySelector('div').addEventListener('click', () => {
+                        banner.style.display = 'none';
+                        deferredPrompt.prompt();
+                        deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                console.log('User accepted the install prompt');
+                            }
+                            deferredPrompt = null;
+                        });
+                    });
+                }
+            });
+
+            // Close button logic
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                banner.style.display = 'none';
+                localStorage.setItem('pwa-banner-dismissed', '1');
+            });
         })();
     </script>
 
     <style>
         @keyframes slideUpBanner {
-            from { transform: translateY(100%); opacity: 0; }
-            to   { transform: translateY(0);    opacity: 1; }
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
     </style>
 
