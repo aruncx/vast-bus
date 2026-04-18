@@ -34,65 +34,27 @@ try {
 
 // --- Auth Guard Logic ---
 
-const authTimeout = setTimeout(() => {
-    const guardError = document.getElementById('auth-guard-error');
-    if (guardError) {
-        guardError.textContent = "Google Login blocked on local file. Please run on a web server. Returning...";
-        guardError.style.display = 'block';
-        const statusIcon = document.querySelector('.auth-status-icon');
-        if (statusIcon) statusIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>`;
-    }
-    setTimeout(() => { window.location.href = 'index.html'; }, 3000);
-}, 4000);
+// --- Initial Map Load ---
+// Instantly initialize the map because they would only get this link if they were already logged in!
+initDashboard();
 
+// --- Background Profile Fetch ---
 if (auth) {
     auth.onAuthStateChanged((user) => {
-        clearTimeout(authTimeout); // Cancel the timeout since auth successfully responded
-
-        const guard = document.getElementById('auth-guard');
-        const guardError = document.getElementById('auth-guard-error');
         const dashUser = document.getElementById('dashboard-user');
         const dashUserName = document.getElementById('dash-user-name');
         const dashUserPhoto = document.getElementById('dash-user-photo');
 
         if (user && user.email && user.email.endsWith('@vidyaacademy.ac.in')) {
-            // Authorized
-            if (guard) {
-                guard.style.opacity = '0';
-                setTimeout(() => guard.style.display = 'none', 500);
-            }
+            // Authorized silently in background
             if (dashUser) dashUser.style.display = 'flex';
             if (dashUserName) dashUserName.textContent = user.displayName || "Student";
             if (dashUserPhoto && user.photoURL) dashUserPhoto.src = user.photoURL;
-
-            // Start Dashboard Services
-            initDashboard();
         } else {
-            // Unauthorized or Not Logged In
-            if (guardError) {
-                guardError.textContent = user ? "Access Denied: Please use your @vidyaacademy.ac.in email to sign in." : "Returning to login...";
-                guardError.style.display = 'block';
-                const statusIcon = document.querySelector('.auth-status-icon');
-                if (statusIcon) statusIcon.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i>`;
-            }
-
-            // Simple Delay before redirect
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 3000);
+            // If they manually typed this URL and aren't logged in, silently boot them out
+            window.location.href = 'index.html';
         }
     });
-
-} else {
-    // If Firebase Auth failed to initialize, prevent infinite loading
-    window.onload = () => {
-        const guardError = document.getElementById('auth-guard-error');
-        if (guardError) {
-            guardError.textContent = "System Error: Authentication service unavailable.";
-            guardError.style.display = 'block';
-        }
-        setTimeout(() => { window.location.href = 'index.html'; }, 3000);
-    };
 }
 // Wrap existing logic into initDashboard function
 let isDashboardInitialized = false;
