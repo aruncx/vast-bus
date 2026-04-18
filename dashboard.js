@@ -10,7 +10,6 @@ document.onkeydown = (e) => {
         return false;
     }
 };
-
 // TODO: Replace with your actual Firebase Project Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyAfQWJqU-jo1OQMukEm9fqwE6evuCeFX9w",
@@ -35,9 +34,7 @@ try {
 // --- Auth Guard Logic ---
 
 // --- Initial Map Load ---
-// Instantly initialize the map because they would only get this link if they were already logged in!
-initDashboard();
-
+// Script execution moved to the bottom to avoid ReferenceErrors
 // --- Background Profile Fetch ---
 if (auth) {
     auth.onAuthStateChanged((user) => {
@@ -273,3 +270,8 @@ if (db) {
 } else {
     console.warn("Database not initialized. Ensure Firebase credentials are set.");
 }
+} // Close initDashboard body
+
+// === START APPLICATION ===
+// We only call this when the entire script has been perfectly parsed
+initDashboard();
