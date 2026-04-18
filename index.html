@@ -157,6 +157,9 @@
                 <div class="nav-pills">
                     <a href="#search-section" class="nav-pill active"><i class="fa-solid fa-magnifying-glass"></i> Find
                         Bus</a>
+                    <button id="pwa-notif-btn" title="Enable Notifications" class="nav-pill" style="background:none; border:none; cursor:pointer;" onclick="requestNotificationPermission()">
+                        <i class="fa-solid fa-bell"></i>
+                    </button>
                     <a href="about.html" class="nav-pill"><i class="fa-solid fa-circle-info"></i> About</a>
                 </div>
 
@@ -311,8 +314,7 @@
                         <img id="user-photo" src="" alt=""
                             style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--amber);">
                         <div style="display: flex; flex-direction: column;">
-                            <span id="user-name" style="font-weight: 700; color: #fff; font-size: 1rem;">User
-                                Name</span>
+                            <span id="user-name" style="font-weight: 700; color: #fff; font-size: 1rem;">User Name</span>
                             <span id="user-email"
                                 style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">email@vidyaacademy.ac.in</span>
                         </div>
@@ -648,6 +650,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -656,6 +659,7 @@
     <!-- Scripts (order matters) -->
     <script src="script.js"></script>
     <script src="alerts.js"></script>
+    <script src="notifications.js"></script>
     <script src="bus-cursor.js"></script>
     <script src="tracking.js"></script>
 
@@ -737,8 +741,8 @@
             const bannerText = banner.querySelector('p:last-of-type');
 
             // 1. Detection
-            const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent) || 
-                          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             const isAndroid = /android/i.test(navigator.userAgent);
             const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
             const isDismissed = localStorage.getItem('pwa-banner-dismissed');
@@ -747,8 +751,8 @@
 
             // 2. Handle iOS specifically (Manual Instructions)
             if (isIos) {
-                setTimeout(() => { 
-                    banner.style.display = 'block'; 
+                setTimeout(() => {
+                    banner.style.display = 'block';
                 }, 4000);
             }
 
@@ -767,7 +771,7 @@
                 window.addEventListener('beforeinstallprompt', (e) => {
                     e.preventDefault();
                     deferredPrompt = e;
-                    
+
                     // Upgrade the banner to be a "One-Tap Install" button
                     bannerTitle.textContent = "Install VAST Bus App";
                     bannerText.innerHTML = "Tap here for one-click installation and offline access.";

@@ -205,8 +205,19 @@ a {
 }
 
 /* ── Utilities ── */
-.hidden {
-    display: none !important;
+/* Notification Bell in Navbar */
+#pwa-notif-btn {
+    transition: color 0.3s ease, transform 0.2s ease;
+    padding: 0 12px;
+}
+
+#pwa-notif-btn:hover {
+    color: var(--amber) !important;
+    transform: scale(1.15);
+}
+
+#pwa-notif-btn i {
+    font-size: 1.1rem;
 }
 
 /* ══════════════════════════════════════════

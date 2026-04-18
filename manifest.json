@@ -2,6 +2,7 @@
   "name": "VAST College Bus Tracks",
   "short_name": "VAST Bus",
   "description": "Find VAST bus routes, timings, stops, and transport details for Vidya Academy of Science and Technology, Thrissur.",
+  "gcm_sender_id": "103953800507",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#171717",

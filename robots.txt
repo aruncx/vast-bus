@@ -3,7 +3,10 @@ Allow: /
 
 # Block technical/internal files from indexing
 Disallow: /sw.js
+Disallow: /firebase-messaging-sw.js
 Disallow: /manifest.json
 Disallow: /data.json
+Disallow: /notifications.js
+Disallow: /bus-cursor.js
 
 Sitemap: https://vastbus.vercel.app/sitemap.xml
