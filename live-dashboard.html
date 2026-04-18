@@ -67,15 +67,49 @@
         /* Tracking Route UI */
         #eta-overlay { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.95); color: #111; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-family: 'Inter', sans-serif; font-size: 1rem; z-index: 2000; display: flex; align-items: center; gap: 0.8rem; border-left: 4px solid var(--brand-500); width: 90%; max-width: 400px; }
         #eta-overlay.hidden { display: none !important; }
+
+        /* Auth Guard Overlay */
+        #auth-guard { position: fixed; inset: 0; background: var(--neutral-950); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; transition: opacity 0.5s ease; }
+        .auth-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 3rem 2rem; border-radius: 24px; max-width: 400px; width: 100%; box-shadow: var(--shadow-xl); }
+        .auth-status-icon { font-size: 3rem; margin-bottom: 1.5rem; color: var(--amber); }
+
+        /* Header Profile */
+        .user-chip { display: flex; align-items: center; gap: 10px; padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 30px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.1); }
+        .user-chip img { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--amber); }
+        
+        @media (max-width: 768px) {
+            .dashboard-header h1 { font-size: 1.2rem; }
+            .user-chip span { display: none; }
+        }
     </style>
 </head>
 
 <body>
     
     <header class="dashboard-header">
-        <h1><i class="fa-solid fa-satellite-dish" style="color: #ef4444;"></i> Live Bus Dashboard</h1>
-        <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        <h1 style="flex: 1;"><i class="fa-solid fa-satellite-dish" style="color: #ef4444;"></i> <span>Live Bus Dashboard</span></h1>
+        
+        <div id="dashboard-user" style="display: none; align-items: center; gap: 15px; margin-right: 15px;">
+            <div class="user-chip">
+                <img id="dash-user-photo" src="" alt="">
+                <span id="dash-user-name">Loading...</span>
+            </div>
+        </div>
+
+        <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> <span>Back</span></a>
     </header>
+
+    <!-- Auth Guard Overlay -->
+    <div id="auth-guard">
+        <div class="auth-card animate-fade-up">
+            <div class="auth-status-icon">
+                <i class="fa-solid fa-circle-notch fa-spin"></i>
+            </div>
+            <h2 style="font-family: 'Outfit'; margin-bottom: 0.5rem;">Authenticating</h2>
+            <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">Verifying your college credentials...</p>
+            <div id="auth-guard-error" style="display:none; margin-top: 1.5rem; color: #ef4444; font-weight: 600;"></div>
+        </div>
+    </div>
 
     <div id="map-container">
         <!-- Leaflet Map goes here -->
@@ -90,6 +124,7 @@
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     <script src="dashboard.js"></script>
 

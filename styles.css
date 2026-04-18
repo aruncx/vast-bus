@@ -202,6 +202,154 @@ a {
     justify-content: space-between;
 }
 
+/* ══════════════════════════════════════════
+   LIVE TRACKING MODAL & AUTH UI
+══════════════════════════════════════════ */
+.google-signin-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    height: 48px;
+    background-color: #ffffff;
+    border: 1px solid #747775;
+    border-radius: 24px; /* Pill shaped for modern clean look */
+    color: #1f1f1f;
+    font-family: 'Google Sans', arial, sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all .2s ease;
+    box-shadow: none;
+    padding: 0 16px;
+}
+
+.google-signin-button:hover {
+    background-color: #f8f9fa;
+    border-color: #d2dce0;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+}
+
+.google-signin-button:active {
+    background-color: #e8eaed;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+}
+
+.google-icon-box {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Redesigned Tracking Options */
+.tracking-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.tracking-option-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 1.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tracking-option-btn:hover {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.4);
+    transform: translateY(-5px);
+}
+
+.tracking-option-btn.accent:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.4);
+}
+
+.opt-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.tracking-option-btn:hover .opt-icon {
+    background: #10b981;
+    color: #fff;
+}
+
+.tracking-option-btn.accent:hover .opt-icon {
+    background: #6366f1;
+}
+
+.opt-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.opt-text strong {
+    font-size: 1.1rem;
+    font-family: 'Outfit';
+    margin-bottom: 2px;
+}
+
+.opt-text span {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: center;
+}
+
+/* Utility buttons */
+.btn-subtle {
+    opacity: 0.6;
+}
+
+.btn-subtle:hover {
+    opacity: 1;
+}
+
+.cta-btn {
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    font-family: 'Inter';
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cta-btn.primary { background: #6366f1; color: #fff; }
+.cta-btn.danger { background: #ef4444; color: #fff; }
+
+.cta-btn:hover {
+    filter: brightness(1.2);
+    transform: scale(1.02);
+}
+
+@media (max-width: 480px) {
+    .tracking-options {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
 .nav-brand {
     display: flex;
     align-items: center;

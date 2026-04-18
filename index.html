@@ -265,48 +265,94 @@
     <div id="tracking-modal" class="modal hidden">
         <div class="modal-content glass">
             <span class="close-modal" id="close-tracking-modal">&times;</span>
-            <div class="modal-header">
-                <h3><i class="fa-solid fa-satellite-dish"></i> Live Bus Tracking</h3>
+            
+            <div class="modal-header" style="text-align: center; margin-bottom: 2rem;">
+                <h3 style="font-family: 'Outfit'; font-size: 1.8rem; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fa-solid fa-satellite-dish" style="color: #ef4444;"></i> Live Bus Tracking
+                </h3>
             </div>
-            <div class="modal-body" id="tracking-modal-body">
-                <p style="margin-bottom: 1.5rem; text-align: center;">Are you inside the college bus?</p>
-                <div class="modal-actions" style="display: flex; gap: 1rem; justify-content: center;">
-                    <button id="btn-inside-bus" class="btn btn-primary"
-                        style="background:#10b981; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:600;"><i
-                            class="fa-solid fa-check"></i> YES</button>
-                    <button id="btn-tracking-bus" class="btn btn-secondary"
-                        style="background:#6366f1; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:600;"><i
-                            class="fa-solid fa-xmark"></i> NO (Just Tracking)</button>
+
+            <div id="auth-state-container" class="animate-fade-up">
+                <!-- User Profile (Shown when logged in) -->
+                <div id="user-profile" class="hidden" style="display: none; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 2rem;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <img id="user-photo" src="" alt="" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--amber);">
+                        <div style="display: flex; flex-direction: column;">
+                            <span id="user-name" style="font-weight: 700; color: #fff; font-size: 1rem;">User Name</span>
+                            <span id="user-email" style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">email@vidyaacademy.ac.in</span>
+                        </div>
+                    </div>
+                    <button id="google-sign-out" class="btn-subtle" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: 0.2s;">
+                        <i class="fa-solid fa-sign-out"></i>
+                    </button>
                 </div>
-                <div style="margin-top: 1.5rem; text-align: center;">
-                    <a href="live-dashboard.html"
-                        style="color: var(--brand-600); font-weight: 600; text-decoration: underline; font-size: 0.9rem;">View
-                        All Live Buses Dashboard</a>
+
+                <!-- Google Sign-in Card (Shown when logged out) -->
+                <div id="login-card" style="text-align: center; padding: 2.5rem 1.5rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; margin-bottom: 2rem;">
+                    <div style="background: rgba(245, 158, 11, 0.1); width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.8rem; color: var(--amber);">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 style="font-family: 'Outfit'; font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem;">College Access Required</h3>
+                    <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5); margin-bottom: 2rem; line-height: 1.5;">To protect student privacy, please sign in using your <br><b>@vidyaacademy.ac.in</b> email address.</p>
+                    
+                    <!-- Branded Google Button -->
+                    <button id="google-sign-in-btn" class="google-signin-button">
+                        <div class="google-icon-box">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px"><path fill="#fbc02d" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#e53935" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4caf50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1565c0" d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
+                        </div>
+                        <span>Sign in with Google</span>
+                    </button>
+                    <p id="auth-error-msg" style="color: #ef4444; font-size: 0.85rem; margin-top: 1rem; display: none;"></p>
                 </div>
+            </div>
+
+            <!-- GPS Question (Hidden until signed in) -->
+            <div id="gps-question-container" class="hidden" style="display: none;">
+                <p class="modal-subtitle" style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem; color: rgba(255,255,255,0.7);">Are you currently <strong>inside</strong> the bus?</p>
+                
+                <div class="tracking-options">
+                    <button id="btn-inside-bus" class="tracking-option-btn">
+                        <div class="opt-icon"><i class="fa-solid fa-bus"></i></div>
+                        <div class="opt-text">
+                            <strong>YES</strong>
+                            <span>I'm inside, share my GPS</span>
+                        </div>
+                    </button>
+
+                    <button id="btn-view-map" class="tracking-option-btn accent">
+                        <div class="opt-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                        <div class="opt-text">
+                            <strong>NO</strong>
+                            <span>Just let me see the map</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Link -->
+            <div id="dashboard-link-container" style="margin-top: 1.5rem; text-align: center;">
+                <a href="live-dashboard.html"
+                    style="color: var(--brand-600); font-weight: 600; text-decoration: underline; font-size: 0.9rem;">
+                    <i class="fa-solid fa-chart-line"></i> View All Live Buses Dashboard
+                </a>
             </div>
 
             <!-- YES FLOW: Inside Bus -->
             <div class="modal-body hidden" id="inside-bus-flow">
-                <p>Select the bus you are currently in:</p>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">Select the bus you are currently in:</p>
                 <select id="inside-bus-select"
-                    style="margin-bottom: 1rem; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--neutral-300);"></select>
-                <button id="start-sharing-btn"
-                    style="width: 100%; background:#ef4444; color:#fff; border:none; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold;">Start
-                    Sharing GPS</button>
-                <p id="sharing-status"
-                    style="margin-top: 1rem; font-size: 0.85rem; color: var(--neutral-400); text-align: center;"></p>
+                    style="margin-bottom: 1.5rem; width: 100%; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff;"></select>
+                <button id="start-sharing-btn" style="width: 100%; background:#ef4444; color:#fff; border:none; padding:12px; border-radius:10px; cursor:pointer; font-weight:bold;">Start Sharing GPS</button>
+                <p id="sharing-status" style="margin-top: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.4); text-align: center;"></p>
             </div>
 
             <!-- NO FLOW: Tracking Bus -->
             <div class="modal-body hidden" id="tracking-bus-flow">
-                <p>Select the bus you want to track:</p>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">Select the bus you want to track:</p>
                 <select id="tracking-bus-select"
-                    style="margin-bottom: 1rem; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--neutral-300);"></select>
-                <button id="start-tracking-btn"
-                    style="width: 100%; background:#6366f1; color:#fff; border:none; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold;">Track
-                    Bus Location</button>
-                <p id="tracking-status"
-                    style="margin-top: 1rem; font-size: 0.85rem; color: var(--neutral-400); text-align: center;"></p>
+                    style="margin-bottom: 1.5rem; width: 100%; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff;"></select>
+                <button id="start-tracking-btn" style="width: 100%; background:#6366f1; color:#fff; border:none; padding:12px; border-radius:10px; cursor:pointer; font-weight:bold;">Track Bus Location</button>
+                <p id="tracking-status" style="margin-top: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.4); text-align: center;"></p>
             </div>
         </div>
     </div>

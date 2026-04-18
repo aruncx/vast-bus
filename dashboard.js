@@ -23,15 +23,60 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-let app, db;
+let app, auth, db;
 try {
     app = firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
     db = firebase.database();
 } catch (e) {
-    console.error("Firebase init error (Did you replace the config?):", e);
+    console.error("Firebase init error:", e);
 }
 
-// URL Parameters for Live Tracking
+// --- Auth Guard Logic ---
+if (auth) {
+    auth.onAuthStateChanged((user) => {
+        const guard = document.getElementById('auth-guard');
+        const guardError = document.getElementById('auth-guard-error');
+        const dashUser = document.getElementById('dashboard-user');
+        const dashUserName = document.getElementById('dash-user-name');
+        const dashUserPhoto = document.getElementById('dash-user-photo');
+
+        if (user && user.email.endsWith('@vidyaacademy.ac.in')) {
+            // Authorized
+            if (guard) {
+                guard.style.opacity = '0';
+                setTimeout(() => guard.style.display = 'none', 500);
+            }
+            if (dashUser) dashUser.style.display = 'flex';
+            if (dashUserName) dashUserName.textContent = user.displayName || "Student";
+            if (dashUserPhoto && user.photoURL) dashUserPhoto.src = user.photoURL;
+
+            // Start Dashboard Services
+            initDashboard();
+        } else {
+            // Unauthorized or Not Logged In
+            if (guardError) {
+                guardError.textContent = user ? "Access Denied: Please use your @vidyaacademy.ac.in email to sign in." : "Returning to login...";
+                guardError.style.display = 'block';
+                const statusIcon = document.querySelector('.auth-status-icon');
+                if (statusIcon) statusIcon.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i>`;
+            }
+
+            // Simple Delay before redirect
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 3000);
+        }
+    });
+}
+
+// Wrap existing logic into initDashboard function
+let isDashboardInitialized = false;
+function initDashboard() {
+    if (isDashboardInitialized) return;
+    isDashboardInitialized = true;
+
+    // Center the map roughly around Thrissur, Kerala (VAST location area)
 const urlParams = new URLSearchParams(window.location.search);
 const trackedBusId = urlParams.get('track');
 const studentLat = parseFloat(urlParams.get('slat'));

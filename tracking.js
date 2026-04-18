@@ -13,11 +13,12 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-let app, auth, db;
+let app, auth, db, googleProvider;
 try {
     app = firebase.initializeApp(firebaseConfig);
     auth = firebase.auth();
     db = firebase.database();
+    googleProvider = new firebase.auth.GoogleAuthProvider();
 } catch (e) {
     console.error("Firebase init error (Did you replace the config?):", e);
 }
@@ -27,17 +28,20 @@ let watchId = null;
 let currentBusId = null;
 let sessionId = null;
 
-// DOM Elements
-const trackingModal = document.getElementById('tracking-modal');
-const closeTrackingModal = document.getElementById('close-tracking-modal');
-const liveTrackingBtn = document.getElementById('live-tracking-btn');
-const btnInsideBus = document.getElementById('btn-inside-bus');
-const btnTrackingBus = document.getElementById('btn-tracking-bus');
-const trackingModalBody = document.getElementById('tracking-modal-body');
-const insideBusFlow = document.getElementById('inside-bus-flow');
-const insideBusSelect = document.getElementById('inside-bus-select');
 const startSharingBtn = document.getElementById('start-sharing-btn');
 const sharingStatus = document.getElementById('sharing-status');
+
+// New Auth UI Elements
+const authStateContainer = document.getElementById('auth-state-container');
+const loginCard = document.getElementById('login-card');
+const googleSignInBtn = document.getElementById('google-sign-in-btn');
+const gpsQuestionContainer = document.getElementById('gps-question-container');
+const authErrorMsg = document.getElementById('auth-error-msg');
+const googleSignOutBtn = document.getElementById('google-sign-out');
+const userProfile = document.getElementById('user-profile');
+const userName = document.getElementById('user-name');
+const userEmail = document.getElementById('user-email');
+const userPhoto = document.getElementById('user-photo');
 
 // Tracking Bus Variables
 const trackingBusFlow = document.getElementById('tracking-bus-flow');
@@ -50,6 +54,72 @@ let gMap = null;
 let directionsService = null;
 let directionsRenderer = null;
 let liveTrackingInterval = null;
+const userProfile = document.getElementById('user-profile');
+const userName = document.getElementById('user-name');
+const userPhoto = document.getElementById('user-photo');
+const btnSignOut = document.getElementById('btn-sign-out');
+
+// --- Auth State Management ---
+if (auth) {
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            // User is signed in
+            if (userProfile) userProfile.style.display = 'flex';
+            if (userName) userName.textContent = user.displayName || "Student";
+            if (userEmail) userEmail.textContent = user.email;
+            if (userPhoto && user.photoURL) {
+                userPhoto.src = user.photoURL;
+                userPhoto.style.display = 'block';
+            }
+            
+            // Toggle Modal Sections
+            if (loginCard) loginCard.style.display = 'none';
+            if (gpsQuestionContainer) gpsQuestionContainer.style.display = 'block';
+            
+            sessionId = user.uid;
+        } else {
+            // User is signed out
+            if (userProfile) userProfile.style.display = 'none';
+            if (loginCard) loginCard.style.display = 'block';
+            if (gpsQuestionContainer) gpsQuestionContainer.style.display = 'none';
+            
+            sessionId = null;
+        }
+    });
+
+    // Handle Google Sign-in
+    if (googleSignInBtn) {
+        googleSignInBtn.addEventListener('click', async () => {
+            try {
+                if (authErrorMsg) authErrorMsg.style.display = 'none';
+                googleProvider.setCustomParameters({ hd: 'vidyaacademy.ac.in' });
+                const result = await auth.signInWithPopup(googleProvider);
+                const user = result.user;
+
+                if (user.email && !user.email.endsWith('@vidyaacademy.ac.in')) {
+                    await auth.signOut();
+                    if (authErrorMsg) {
+                        authErrorMsg.textContent = "Access Denied: Please use your @vidyaacademy.ac.in email.";
+                        authErrorMsg.style.display = 'block';
+                    }
+                    return;
+                }
+            } catch (error) {
+                console.error("Sign-in error:", error);
+                if (authErrorMsg) {
+                    authErrorMsg.textContent = "Connection error. Please try again.";
+                    authErrorMsg.style.display = 'block';
+                }
+            }
+        });
+    }
+
+    if (googleSignOutBtn) {
+        googleSignOutBtn.addEventListener('click', () => {
+            auth.signOut();
+        });
+    }
+}
 
 // --- Time Restriction Logic ---
 // Allow sharing GPS only between 7:00 AM - 9:30 AM and 4:00 PM - 7:30 PM
@@ -98,23 +168,13 @@ if (btnInsideBus) {
             return;
         }
 
-        // Authenticate anonymously if not already
-        if (!auth.currentUser) {
-            try {
-                const userCredential = await auth.signInAnonymously();
-                sessionId = userCredential.user.uid;
-            } catch (error) {
-                console.error("Error signing in anonymously:", error);
-                alert("Could not connect to tracking server.");
-                return;
-            }
-        } else {
-            sessionId = auth.currentUser.uid;
-        }
+        // Auth check (just in case)
+        if (!auth.currentUser) return;
+        sessionId = auth.currentUser.uid;
 
-        // Switch UI
-        trackingModalBody.classList.add('hidden');
-        insideBusFlow.classList.remove('hidden');
+        // Switch UI to bus selection
+        if (gpsQuestionContainer) gpsQuestionContainer.style.display = 'none';
+        if (insideBusFlow) insideBusFlow.style.display = 'block';
 
         // Populate bus selection dropdown
         insideBusSelect.innerHTML = '<option value="" disabled selected>Select Bus Number</option>';
@@ -132,9 +192,15 @@ if (btnInsideBus) {
 // Tracking Bus - NO
 if (btnTrackingBus) {
     btnTrackingBus.addEventListener('click', () => {
+        // Auth check (just in case)
+        if (!auth.currentUser) return;
+
         // Switch UI to bus selection for tracking
-        trackingModalBody.classList.add('hidden');
-        trackingBusFlow.classList.remove('hidden');
+        if (gpsQuestionContainer) gpsQuestionContainer.style.display = 'none';
+        if (trackingBusFlow) {
+            trackingBusFlow.classList.remove('hidden');
+            trackingBusFlow.style.display = 'block';
+        }
 
         // Populate bus selection dropdown
         trackingBusSelect.innerHTML = '<option value="" disabled selected>Select the Bus you want to track</option>';
@@ -409,13 +475,15 @@ function updateLocationToFirebase(lat, lng) {
     }
 
     const timestamp = firebase.database.ServerValue.TIMESTAMP;
+    const user = auth.currentUser;
 
-    // Push raw GPS to passenger_locations
-    // A Firebase Function will listen to this and average the locations for currentBusId
+    // Push raw GPS to passenger_locations with user metadata for accountability
     db.ref(`passenger_locations/${currentBusId}/${sessionId}`).set({
         latitude: lat,
         longitude: lng,
-        timestamp: timestamp
+        timestamp: timestamp,
+        user_name: user ? user.displayName : "Unknown",
+        user_email: user ? user.email : "Unknown"
     })
         .then(() => {
             sharingStatus.textContent = `✅ Actively sharing GPS for Bus ${currentBusId}.`;
