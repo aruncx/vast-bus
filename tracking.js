@@ -28,6 +28,15 @@ let watchId = null;
 let currentBusId = null;
 let sessionId = null;
 
+// DOM Elements
+const trackingModal = document.getElementById('tracking-modal');
+const closeTrackingModal = document.getElementById('close-tracking-modal');
+const liveTrackingBtn = document.getElementById('live-tracking-btn');
+const btnInsideBus = document.getElementById('btn-inside-bus');
+const btnTrackingBus = document.getElementById('btn-tracking-bus');
+const trackingModalBody = document.getElementById('tracking-modal-body');
+const insideBusFlow = document.getElementById('inside-bus-flow');
+const insideBusSelect = document.getElementById('inside-bus-select');
 const startSharingBtn = document.getElementById('start-sharing-btn');
 const sharingStatus = document.getElementById('sharing-status');
 
@@ -48,16 +57,13 @@ const trackingBusFlow = document.getElementById('tracking-bus-flow');
 const trackingBusSelect = document.getElementById('tracking-bus-select');
 const startTrackingBtn = document.getElementById('start-tracking-btn');
 const trackingStatus = document.getElementById('tracking-status');
+const dashboardLinkContainer = document.getElementById('dashboard-link-container');
 
 // Google Maps rendering variables
 let gMap = null;
 let directionsService = null;
 let directionsRenderer = null;
 let liveTrackingInterval = null;
-const userProfile = document.getElementById('user-profile');
-const userName = document.getElementById('user-name');
-const userPhoto = document.getElementById('user-photo');
-const btnSignOut = document.getElementById('btn-sign-out');
 
 // --- Auth State Management ---
 if (auth) {
@@ -75,6 +81,7 @@ if (auth) {
             // Toggle Modal Sections
             if (loginCard) loginCard.style.display = 'none';
             if (gpsQuestionContainer) gpsQuestionContainer.style.display = 'block';
+            if (dashboardLinkContainer) dashboardLinkContainer.style.display = 'block';
             
             sessionId = user.uid;
         } else {
@@ -82,6 +89,7 @@ if (auth) {
             if (userProfile) userProfile.style.display = 'none';
             if (loginCard) loginCard.style.display = 'block';
             if (gpsQuestionContainer) gpsQuestionContainer.style.display = 'none';
+            if (dashboardLinkContainer) dashboardLinkContainer.style.display = 'none';
             
             sessionId = null;
         }
@@ -146,10 +154,22 @@ function isTrackingAllowedTime() {
 // Open Modal
 if (liveTrackingBtn) {
     liveTrackingBtn.addEventListener('click', () => {
-        trackingModal.classList.remove('hidden');
-        trackingModalBody.classList.remove('hidden');
-        insideBusFlow.classList.add('hidden');
-        trackingBusFlow.classList.add('hidden');
+        if (trackingModal) trackingModal.classList.remove('hidden');
+        if (trackingModalBody) trackingModalBody.style.display = 'block';
+        if (gpsQuestionContainer) gpsQuestionContainer.style.display = 'none'; // Will be set by auth state
+        if (insideBusFlow) insideBusFlow.style.display = 'none';
+        if (trackingBusFlow) trackingBusFlow.style.display = 'none';
+        
+        // If logged in, show questions; else show login
+        if (auth.currentUser) {
+            if (loginCard) loginCard.style.display = 'none';
+            if (gpsQuestionContainer) gpsQuestionContainer.style.display = 'block';
+            if (dashboardLinkContainer) dashboardLinkContainer.style.display = 'block';
+        } else {
+            if (loginCard) loginCard.style.display = 'block';
+            if (gpsQuestionContainer) gpsQuestionContainer.style.display = 'none';
+            if (dashboardLinkContainer) dashboardLinkContainer.style.display = 'none';
+        }
     });
 }
 

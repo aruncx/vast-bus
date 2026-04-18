@@ -272,7 +272,7 @@
                 </h3>
             </div>
 
-            <div id="auth-state-container" class="animate-fade-up">
+            <div id="tracking-modal-body">
                 <!-- User Profile (Shown when logged in) -->
                 <div id="user-profile" class="hidden" style="display: none; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 2rem;">
                     <div style="display: flex; align-items: center; gap: 12px;">
@@ -330,7 +330,7 @@
             </div>
 
             <!-- Dashboard Link -->
-            <div id="dashboard-link-container" style="margin-top: 1.5rem; text-align: center;">
+            <div id="dashboard-link-container" style="display: none; margin-top: 1.5rem; text-align: center;">
                 <a href="live-dashboard.html"
                     style="color: var(--brand-600); font-weight: 600; text-decoration: underline; font-size: 0.9rem;">
                     <i class="fa-solid fa-chart-line"></i> View All Live Buses Dashboard
@@ -357,40 +357,7 @@
         </div>
     </div>
 
-    <style>
-        .modal {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-        }
 
-        .hidden {
-            display: none !important;
-        }
-
-        .modal-content {
-            background: #fff;
-            padding: 2rem;
-            border-radius: var(--r-lg);
-            width: 90%;
-            max-width: 450px;
-            position: relative;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--neutral-400);
-        }
-    </style>
 
 
 
@@ -564,7 +531,7 @@
                         </label>
                         <div class="input-wrapper">
                             <input type="text" id="fee-display" placeholder="Amount will appear here" readonly
-                                style="background: var(--neutral-50); color: var(--neutral-900); font-weight: bold; font-size: 1.5rem; text-align: center; border-color: var(--neutral-200);">
+                                style="background: rgba(255,255,255,0.05); color: #fff; font-weight: bold; font-size: 1.5rem; text-align: center; border: 1.5px solid rgba(255,255,255,0.1); border-radius: var(--r-md);">
                         </div>
                     </div>
 

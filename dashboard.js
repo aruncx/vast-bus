@@ -41,7 +41,7 @@ if (auth) {
         const dashUserName = document.getElementById('dash-user-name');
         const dashUserPhoto = document.getElementById('dash-user-photo');
 
-        if (user && user.email.endsWith('@vidyaacademy.ac.in')) {
+        if (user && user.email && user.email.endsWith('@vidyaacademy.ac.in')) {
             // Authorized
             if (guard) {
                 guard.style.opacity = '0';
@@ -68,6 +68,18 @@ if (auth) {
             }, 3000);
         }
     });
+}
+
+} else {
+    // If Firebase Auth failed to initialize, prevent infinite loading
+    window.onload = () => {
+        const guardError = document.getElementById('auth-guard-error');
+        if (guardError) {
+            guardError.textContent = "System Error: Authentication service unavailable.";
+            guardError.style.display = 'block';
+        }
+        setTimeout(() => { window.location.href = 'index.html'; }, 3000);
+    };
 }
 
 // Wrap existing logic into initDashboard function
