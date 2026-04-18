@@ -205,6 +205,10 @@ a {
 }
 
 /* ── Utilities ── */
+.hidden {
+    display: none !important;
+}
+
 /* Notification Bell in Navbar */
 .nav-notif-btn {
     display: flex;
