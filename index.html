@@ -736,35 +736,47 @@
             const bannerTitle = banner.querySelector('p');
             const bannerText = banner.querySelector('p:last-of-type');
 
-            // 1. Detect iOS Safari (not Chrome on iOS, which can't install PWAs)
+            // 1. Detection
             const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent) || 
                           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            const isAndroid = /android/i.test(navigator.userAgent);
             const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
             const isDismissed = localStorage.getItem('pwa-banner-dismissed');
 
+            if (isInStandaloneMode || isDismissed) return;
+
             // 2. Handle iOS specifically (Manual Instructions)
-            if (isIos && !isInStandaloneMode && !isDismissed) {
-                setTimeout(() => { banner.style.display = 'block'; }, 4000);
+            if (isIos) {
+                setTimeout(() => { 
+                    banner.style.display = 'block'; 
+                }, 4000);
             }
 
-            // 3. Handle Android/Chrome (Native Prompt Trigger)
-            window.addEventListener('beforeinstallprompt', (e) => {
-                // Prevent Chrome 67 and earlier from automatically showing the prompt
-                e.preventDefault();
-                // Stash the event so it can be triggered later.
-                deferredPrompt = e;
-                
-                if (!isDismissed) {
-                    // Update banner for Android
-                    bannerTitle.textContent = "Install VAST Bus App";
-                    bannerText.innerHTML = "Install on your device for fast, offline access to routes and fees.";
-                    
-                    // Show custom banner
-                    setTimeout(() => { banner.style.display = 'block'; }, 3000);
+            // 3. Handle Android (Initially show instructions, upgrade to native prompt if available)
+            if (isAndroid) {
+                // Show banner with manual instructions after a delay
+                setTimeout(() => {
+                    if (banner.style.display !== 'block') { // Only if not already shown/handled
+                        bannerTitle.textContent = "Add VAST Bus to Home Screen";
+                        bannerText.innerHTML = 'Tap the <i class="fa-solid fa-ellipsis-vertical"></i> <b>Menu</b> and select <b>"Install App"</b> or <b>"Add to Home screen"</b>';
+                        banner.style.display = 'block';
+                    }
+                }, 4000);
 
-                    // Clicking the banner (the text part) will trigger install
-                    banner.querySelector('div').style.cursor = 'pointer';
-                    banner.querySelector('div').addEventListener('click', () => {
+                // Listen for native prompt eligibility
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    deferredPrompt = e;
+                    
+                    // Upgrade the banner to be a "One-Tap Install" button
+                    bannerTitle.textContent = "Install VAST Bus App";
+                    bannerText.innerHTML = "Tap here for one-click installation and offline access.";
+                    banner.style.display = 'block'; // Make sure it's shown
+
+                    // Clicking the banner contents triggers the native prompt
+                    const contentBox = banner.querySelector('div');
+                    contentBox.style.cursor = 'pointer';
+                    contentBox.onclick = () => {
                         banner.style.display = 'none';
                         deferredPrompt.prompt();
                         deferredPrompt.userChoice.then((choiceResult) => {
@@ -773,12 +785,13 @@
                             }
                             deferredPrompt = null;
                         });
-                    });
-                }
-            });
+                    };
+                });
+            }
 
             // Close button logic
             closeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 banner.style.display = 'none';
                 localStorage.setItem('pwa-banner-dismissed', '1');
