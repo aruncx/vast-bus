@@ -7,21 +7,47 @@ const vapidKey = 'BCTA1ASUj-M8z7b5Y_MHka-bq6MA4azaftCTyURjQpO1vrz1A3w4tQKlGO1Q2o
 let messaging;
 let latestToken = null;
 
+// On-screen debugger for mobile
+function debugLog(message, type = 'log') {
+    const consoleContent = document.getElementById('debug-log-content');
+    if (!consoleContent) {
+        console.log(`[FCM Debug Console Missing] ${message}`);
+        return;
+    }
+    
+    if (consoleContent.innerHTML === "Waiting for action...") {
+        consoleContent.innerHTML = "";
+    }
+    
+    const timestamp = new Date().toLocaleTimeString([], { hour12: false, minute: '2-digit', second: '2-digit' });
+    const color = type === 'error' ? '#ef4444' : (type === 'warn' ? '#f59e0b' : '#10b981');
+    const logEntry = `<div style="margin-bottom: 2px;"><span style="color: #666; font-size: 0.6rem;">[${timestamp}]</span> <span style="color: ${color};">${message}</span></div>`;
+    
+    consoleContent.innerHTML = logEntry + consoleContent.innerHTML;
+    console[type](`[FCM Debug] ${message}`);
+}
+
 function initNotifications() {
-    if (!firebase.apps.length) return;
+    debugLog("Initializing Notification Service...");
+    if (!firebase.apps.length) {
+        debugLog("Error: Firebase App not initialized in tracking.js", "error");
+        return;
+    }
     
     try {
         messaging = firebase.messaging();
+        debugLog("FCM Messaging initialized locally.");
         setupForegroundHandler();
         setupTokenRefresh();
     } catch (e) {
-        console.warn("FCM not supported or failed to initialize:", e);
+        debugLog("FCM init failed: " + e.message, "error");
+        console.warn("FCM check failed:", e);
     }
 }
 
 // Request permission and get token
 async function requestNotificationPermission() {
-    console.log('[FCM Debug] Requesting permission...');
+    debugLog("Requesting OS Permission...");
     
     // Hide the hint immediately on click
     const hint = document.getElementById('notif-hint');
@@ -32,54 +58,50 @@ async function requestNotificationPermission() {
 
     try {
         const permission = await Notification.requestPermission();
-        console.log('[FCM Debug] Permission status:', permission);
+        debugLog("User Permission Result: " + permission);
         
         if (permission === 'granted') {
-            console.log('[FCM Debug] Initializing messaging...');
             if (!messaging) {
-                console.log('[FCM Debug] Messaging instance missing, re-initializing...');
+                debugLog("Re-initializing missing messaging instance...");
                 initNotifications();
             }
 
             if (!messaging) {
-                console.error('[FCM Debug] Failed to initialize messaging service. Are you on HTTPS?');
+                debugLog("Critical: Messaging still unavailable. Check HTTPS/SW.", "error");
                 showToast("FCM Init Failed. Check HTTPS.", "error");
                 return false;
             }
 
-            console.log('[FCM Debug] Fetching token with VAPID:', vapidKey);
+            debugLog("Requesting FCM Token from Firebase...");
             const token = await messaging.getToken({ vapidKey: vapidKey });
             
             if (token) {
-                console.log('[FCM Debug] Success! Token:', token);
+                debugLog("TOKEN RECEIVED SUCCESSFULLY! ✅");
                 latestToken = token;
                 await saveTokenToDatabase(token);
                 showToast("VAST Alerts Enabled! ✅", "success");
                 return true;
             } else {
-                console.warn('[FCM Debug] No token received. This could be a Service Worker registration issue.');
-                showToast("Failed to get token. Refresh and try again.", "error");
+                debugLog("No Token received. Check if SW exists at root.", "warn");
                 return false;
             }
         } else {
-            console.warn('[FCM Debug] Notification permission denied or dismissed.');
-            showToast("Notifications blocked. Enable in browser settings.", "error");
+            debugLog("Permission denied/dismissed.", "warn");
+            showToast("Notifications blocked. Enable in settings.", "error");
             return false;
         }
     } catch (err) {
-        console.error('[FCM Debug] Error during subscription flow:', err);
-        showToast("An error occurred. Check browser console.", "error");
+        debugLog("Flow Error: " + err.message, "error");
         return false;
     }
 }
 
 // Save token to Realtime Database
 async function saveTokenToDatabase(token) {
+    debugLog("Saving token to Database...");
     const user = firebase.auth().currentUser;
-    // Create a safe key from the token (remove forbidden chars for Firebase keys: . $ # [ ] /)
     const tokenKey = token.replace(/[.\$#\[\]\/]/g, "_");
     
-    // We store tokens under a flat list, but we tag them with the user UID if they are logged in
     const tokenData = {
         token: token,
         uid: user ? user.uid : "guest",
@@ -91,38 +113,34 @@ async function saveTokenToDatabase(token) {
 
     try {
         await firebase.database().ref('fcm_tokens/' + tokenKey).set(tokenData);
-        console.log("Token registered in Database (" + (user ? "Linked to Account" : "Registered as Guest") + ")");
+        debugLog("Token saved to Database. 💾");
     } catch (e) {
-        console.error("Error saving token to firebase:", e);
+        debugLog("Database Error: " + e.message, "error");
     }
 }
 
 // Handle messages when the app is in the foreground
 function setupForegroundHandler() {
     messaging.onMessage((payload) => {
-        console.log('Foreground message received: ', payload);
-        
-        // Use our existing custom toast system (alerts.js)
+        debugLog("Foreground Message Received! 🔔");
         const title = payload.notification.title || "New Alert";
-        const body = payload.notification.body || "Check the dashboard for details.";
-        
+        const body = payload.notification.body || "Check the dashboard.";
         showToast(`🔔 ${title}: ${body}`, "info");
     });
 }
 
 // Monitor token refresh
 function setupTokenRefresh() {
-    // In SDK v9+, this is handled differently, but for compat:
-    // messaging.onTokenRefresh is mostly handled by getToken itself in new versions
+    // messaging.onTokenRefresh is mostly handled by getToken itself in compat
 }
 
 // Initialize when scripts load
 window.addEventListener('load', () => {
-    // Wait a bit to ensure Firebase app is fully ready from tracking.js
     setTimeout(() => {
         initNotifications();
         checkAndShowHint();
-    }, 1000);
+        debugLog("Diagnostic Suite Ready.");
+    }, 1500);
 });
 
 // Show the 'Click Bell' hint if the user hasn't subscribed yet
@@ -130,7 +148,6 @@ function checkAndShowHint() {
     const hint = document.getElementById('notif-hint');
     if (!hint) return;
 
-    // Don't show if already granted, or if they dismissed it before
     if (Notification.permission === 'granted' || localStorage.getItem('vast_notif_hint_dismissed')) {
         hint.classList.add('hidden');
     } else {
@@ -140,10 +157,10 @@ function checkAndShowHint() {
 
 // Send a local test notification to verify OS-level permissions
 function sendLocalTestNotification() {
-    console.log('[FCM Debug] Triggering local test notification...');
+    debugLog("Firing Local Test Notification...");
     
     if (!("Notification" in window)) {
-        showToast("This browser does not support notifications.", "error");
+        debugLog("Error: Browser lacks Notification support.", "error");
         return;
     }
 
@@ -156,58 +173,52 @@ function sendLocalTestNotification() {
             tag: 'test-notification'
         };
         
-        // Use service worker if available for a more realistic test
         if (navigator.serviceWorker.controller) {
             navigator.serviceWorker.ready.then(registration => {
                 registration.showNotification("VAST System Test 🧪", options);
+                debugLog("Local Test Sent via SW.");
             });
         } else {
-            // Fallback to basic window notification
             new Notification("VAST System Test 🧪", options);
+            debugLog("Local Test Sent via Window.");
         }
         showToast("Test sent! Check your notification bar.", "success");
-    } else if (Notification.permission !== "denied") {
-        showToast("Please click the Bell icon first to grant permission.", "info");
     } else {
-        showToast("Notifications are BLOCKED in your phone settings.", "error");
+        debugLog("Error: Local Test failed - Permission denied.", "error");
+        showToast("Grant permission via Bell icon first.", "info");
     }
 }
 
 // Copy the latest FCM token to clipboard for debugging
 async function copyPushToken() {
-    console.log('[FCM Debug] Copy button clicked. latestToken state:', latestToken);
+    debugLog("Copying Token to clipboard...");
     
     if (!latestToken) {
-        showToast("Fetching your unique Token... please wait.", "info");
+        debugLog("Token not found in memory. Attempting retrieval...");
         const success = await requestNotificationPermission();
         if (!success) {
-            console.error('[FCM Debug] Could not fetch token for copying.');
-            showToast("Failed to fetch token. Are you on HTTPS?", "error");
+            debugLog("Retrieval attempt failed.", "error");
             return;
         }
     }
 
-    // Attempt to copy to clipboard
     try {
-        console.log('[FCM Debug] Attempting clipboard write...');
         await navigator.clipboard.writeText(latestToken);
+        debugLog("Manual Copy successful! ✅");
         
         const btn = document.getElementById('btn-copy-token');
         if (btn) {
             const originalInner = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-            btn.style.background = "#059669"; // Emerald 600
-            
-            showToast("Token copied to clipboard! ✅", "success");
-            
+            btn.style.background = "#059669";
             setTimeout(() => {
                 btn.innerHTML = originalInner;
                 btn.style.background = "rgba(255,255,255,0.1)";
             }, 3000);
         }
+        showToast("Token copied! ✅", "success");
     } catch (err) {
-        console.warn('[FCM Debug] Clipboard API failed, using fallback prompt:', err);
-        // Fallback: Show it in a prompt so the user can manual copy
-        window.prompt("Copy this Token to your clipboard manualy:", latestToken);
+        debugLog("Clipboard Blocked. Opening Fallback Prompt...", "warn");
+        window.prompt("Copy this Token manualy:", latestToken);
     }
 }
