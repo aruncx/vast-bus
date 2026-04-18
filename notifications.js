@@ -5,6 +5,7 @@ const vapidKey = 'BCTA1ASUj-M8z7b5Y_MHka-bq6MA4azaftCTyURjQpO1vrz1A3w4tQKlGO1Q2o
 
 // Access the messaging service (initialized in index.html after the SDK loads)
 let messaging;
+let latestToken = null;
 
 function initNotifications() {
     if (!firebase.apps.length) return;
@@ -51,6 +52,7 @@ async function requestNotificationPermission() {
             
             if (token) {
                 console.log('[FCM Debug] Success! Token:', token);
+                latestToken = token;
                 await saveTokenToDatabase(token);
                 showToast("VAST Alerts Enabled! ✅", "success");
                 return true;
@@ -168,5 +170,34 @@ function sendLocalTestNotification() {
         showToast("Please click the Bell icon first to grant permission.", "info");
     } else {
         showToast("Notifications are BLOCKED in your phone settings.", "error");
+    }
+}
+
+// Copy the latest FCM token to clipboard for debugging
+async function copyPushToken() {
+    if (!latestToken) {
+        showToast("Fetching token... please wait.", "info");
+        const success = await requestNotificationPermission();
+        if (!success) return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(latestToken);
+        const btn = document.getElementById('btn-copy-token');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            btn.style.background = "#10b981"; // Emerald
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = "rgba(255,255,255,0.1)";
+            }, 2000);
+        }
+        showToast("Token copied to clipboard! ✅", "success");
+    } catch (err) {
+        console.error('Failed to copy: ', err);
+        // Fallback for non-clipboard browsers
+        prompt("Your Token (Copy manually):", latestToken);
     }
 }
