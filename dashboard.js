@@ -33,8 +33,22 @@ try {
 }
 
 // --- Auth Guard Logic ---
+
+const authTimeout = setTimeout(() => {
+    const guardError = document.getElementById('auth-guard-error');
+    if (guardError) {
+        guardError.textContent = "Google Login blocked on local file. Please run on a web server. Returning...";
+        guardError.style.display = 'block';
+        const statusIcon = document.querySelector('.auth-status-icon');
+        if (statusIcon) statusIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>`;
+    }
+    setTimeout(() => { window.location.href = 'index.html'; }, 3000);
+}, 4000);
+
 if (auth) {
     auth.onAuthStateChanged((user) => {
+        clearTimeout(authTimeout); // Cancel the timeout since auth successfully responded
+
         const guard = document.getElementById('auth-guard');
         const guardError = document.getElementById('auth-guard-error');
         const dashUser = document.getElementById('dashboard-user');

@@ -238,6 +238,12 @@ a {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
+.modal-content select option {
+    background-color: var(--neutral-900);
+    color: #ffffff;
+    font-size: 1rem;
+}
+
 .close-modal {
     position: absolute;
     top: 15px;
