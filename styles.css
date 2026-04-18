@@ -1921,6 +1921,15 @@ tbody tr:last-child td {
         display: none;
     }
 
+    .nav-pill {
+        padding: 8px; /* Square proportions for icons */
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        min-height: 38px;
+        border-radius: 10px;
+    }
+
     .route-banner {
         flex-direction: column;
         align-items: flex-start;
@@ -1953,15 +1962,12 @@ tbody tr:last-child td {
     }
 
     .nav-pill {
-        padding: 4px 10px;
-        /* Tighter padding for a sleeker look */
-        font-size: 0.82rem;
-        min-height: 32px;
-        /* Thinner height */
+        padding: 0;
+        width: 36px;
+        height: 36px;
+        min-height: 36px;
         border-radius: 8px;
-        /* More defined rectangle-pill */
-        gap: 5px;
-        white-space: nowrap;
+        justify-content: center;
     }
 
     .nav-pill i {
