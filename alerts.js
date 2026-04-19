@@ -131,25 +131,34 @@ function renderTicker(alerts) {
 
 /**
  * Display a toast notification popup
+ * Handles both Sheet Alert objects and simple diagnostic strings
  */
-function showToast(alert) {
+function showToast(alertData, type = 'info') {
     const toastContainer = document.getElementById('toast-container');
     if (!toastContainer) return;
 
+    // Support both object {Message, Priority} and simple string "Message"
+    let alert = typeof alertData === 'string' ? { Message: alertData, Priority: type } : alertData;
+
+    // Ensure priority exists and is a string for toLowerCase()
+    const priority = (alert.Priority || 'Info').toString().toLowerCase();
+    const message = alert.Message || "";
+
     const toast = document.createElement('div');
-    toast.className = `alert-toast toast-${alert.Priority.toLowerCase()} animate-slide-in`;
+    toast.className = `alert-toast toast-${priority} animate-slide-in`;
     
     let iconClass = 'fa-circle-info';
-    if (alert.Priority === 'High') iconClass = 'fa-triangle-exclamation';
-    if (alert.Priority === 'Medium') iconClass = 'fa-circle-exclamation';
+    if (priority === 'high') iconClass = 'fa-triangle-exclamation';
+    if (priority === 'medium') iconClass = 'fa-circle-exclamation';
+    if (priority === 'success') iconClass = 'fa-circle-check';
 
     toast.innerHTML = `
         <div class="toast-icon">
             <i class="fa-solid ${iconClass}"></i>
         </div>
         <div class="toast-content">
-            <h4 class="toast-title">${alert.Priority} Priority</h4>
-            <p class="toast-message">${alert.Message}</p>
+            <h4 class="toast-title" style="text-transform: capitalize;">${priority} Alert</h4>
+            <p class="toast-message">${message}</p>
         </div>
         <button class="toast-close" onclick="this.parentElement.remove()">
             <i class="fa-solid fa-xmark"></i>
@@ -162,7 +171,7 @@ function showToast(alert) {
     setTimeout(() => {
         if (toast.parentElement) {
             toast.classList.add('animate-fade-out');
-            setTimeout(() => toast.remove(), 500); // Wait for fade-out animation
+            setTimeout(() => toast.remove(), 500);
         }
     }, 8000);
 }
