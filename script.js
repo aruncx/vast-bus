@@ -398,7 +398,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Populate hero stats
             const statRoutes = document.getElementById('stat-routes');
+            const statStops = document.getElementById('stat-stops');
             if (statRoutes) statRoutes.textContent = busData.length;
+            if (statStops) statStops.textContent = '380+';
 
             // Show last updated date below both search sections
             const lastUpdated = data.meta && data.meta.last_updated ? data.meta.last_updated : null;
