@@ -2,6 +2,16 @@
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2DSKQ9XLKT"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-2DSKQ9XLKT');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -304,26 +314,6 @@
     <div id="tracking-modal" class="modal hidden">
         <div class="modal-content glass">
             <span class="close-modal" id="close-tracking-modal">&times;</span>
-
-            <!-- Diagnostic Test Suite (Moved for Maximum Visibility) -->
-            <div style="text-align: center; margin: 15px 0; background: rgba(245, 158, 11, 0.05); padding: 15px; border-top: 1px solid rgba(245, 158, 11, 0.1); border-bottom: 1px solid rgba(245, 158, 11, 0.1);">
-                <div style="font-size: 0.8rem; color: var(--amber); font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Diagnostic Suite 🧪</div>
-                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-                    <button onclick="sendLocalTestNotification()" style="background: var(--brand-700); border: 1px solid var(--amber); color: #fff; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                        <i class="fa-solid fa-vial"></i> Test Notification
-                    </button>
-                    <button id="btn-copy-token" onclick="copyPushToken()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
-                        <i class="fa-solid fa-copy"></i> Copy Push Token
-                    </button>
-                </div>
-                <div style="font-size: 0.6rem; color: rgba(255,255,255,0.5); margin-top: 8px;">Use the Push Token in Firebase Console to send a dedicated test message.</div>
-                
-                <!-- On-Screen Console for Mobile Debugging -->
-                <div id="debug-log-console" style="margin-top: 15px; background: #000; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 0.7rem; text-align: left; max-height: 120px; overflow-y: auto; color: #10b981;">
-                    <div style="color: #666; border-bottom: 1px solid #222; margin-bottom: 5px; padding-bottom: 2px;">Mobile Console Logs:</div>
-                    <div id="debug-log-content">Waiting for action...</div>
-                </div>
-            </div>
 
             <div class="modal-header" style="text-align: center; margin-bottom: 2rem;">
                 <h3
