@@ -95,10 +95,17 @@ function setupTokenRefresh() {
 
 // Initialize when scripts load
 window.addEventListener('load', () => {
+    // TEMPORARY: Reset dismissal for testing to ensure the user sees it (v2 reset)
+    if (localStorage.getItem('vast_notif_hint_reset_v2') !== 'true') {
+        localStorage.removeItem('vast_notif_hint_dismissed');
+        localStorage.setItem('vast_notif_hint_reset_v2', 'true');
+    }
+
+    // Run after a short delay to ensure DOM is stable
     setTimeout(() => {
         initNotifications();
         checkAndShowHint();
-    }, 1500);
+    }, 600);
 });
 
 // Show the 'Click Bell' hint if the user hasn't subscribed yet
@@ -115,9 +122,15 @@ function checkAndShowHint() {
         };
     }
 
-    if (Notification.permission === 'granted' || localStorage.getItem('vast_notif_hint_dismissed')) {
-        hint.classList.add('hidden');
-    } else {
+    const isSupported = "Notification" in window;
+    const isGranted = isSupported && Notification.permission === 'granted';
+    const wasDismissed = localStorage.getItem('vast_notif_hint_dismissed') === 'true';
+
+    // Show only if not granted AND not dismissed, and if the browser supports it
+    if (!isGranted && !wasDismissed && isSupported) {
         hint.classList.remove('hidden');
+        console.log('[FCM Debug] Notification hint displayed.');
+    } else {
+        hint.classList.add('hidden');
     }
 }

@@ -240,20 +240,21 @@ a {
 /* Notification Hint Tooltip */
 .notif-hint {
     position: absolute;
-    top: 55px;
-    right: -20px;
+    top: 58px;
+    right: -10px;
     white-space: nowrap;
-    background: rgba(245, 158, 11, 0.95);
-    color: #000;
-    padding: 8px 14px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
-    z-index: 1001;
+    background: #f59e0b; /* Solid Amber */
+    color: #000 !important;
+    padding: 10px 16px;
+    border-radius: var(--r-xl);
+    font-size: 0.95rem;
+    font-weight: 800;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.1);
+    z-index: 999999; /* Over everything */
     animation: hintPulse 2s ease-in-out infinite;
-    pointer-events: none;
+    pointer-events: auto; /* Allow clicking the close button */
     letter-spacing: 0.02em;
+    border: 2px solid #000;
 }
 
 .hint-arrow {
